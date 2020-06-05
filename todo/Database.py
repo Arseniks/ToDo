@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, NoReturn
 
@@ -10,6 +11,15 @@ CONNECTION = sqlite3.connect(DB_PATH)
 
 def get_conn() -> sqlite3.Connection:
     return CONNECTION
+
+
+@dataclass
+class ToDo:
+    id_: int
+    name: str
+    date: datetime.date
+    done: int
+    description: Optional[str] = None
 
 
 def create_database() -> NoReturn:
@@ -27,10 +37,10 @@ def create_database() -> NoReturn:
         print("An error occurred:", e.args[0])
 
 
-def write(id_: int, name: str, date: datetime.date,  done: int, description: Optional[str] = None) -> NoReturn:
+def write(todo: ToDo) -> NoReturn:
         conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", (id_, name, description, date, done))
+        cursor.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", (todo.id_, todo.name, todo.description, todo.date, todo.done))
         conn.commit()
 
 
