@@ -2,7 +2,8 @@ import sqlite3
 import datetime
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, NoReturn
+from typing import Optional, NoReturn, List
+import os
 
 
 DB_PATH = Path("ToDo.db")
@@ -23,18 +24,14 @@ class ToDo:
 
 
 def create_database() -> NoReturn:
-    # Проверить, что база существует
-    try:
-        conn = sqlite3.connect("ToDo.db")
+    if not os.path.exists(DB_PATH):
+        conn = get_conn()
         cursor = conn.cursor()
         cursor.execute("""CREATE TABLE Tasks
                           (id_ integer, name text, description text,
                            date real, done integer)
                        """)
         conn.commit()
-        conn.close()
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
 
 
 def write(todo: ToDo) -> NoReturn:
@@ -44,64 +41,43 @@ def write(todo: ToDo) -> NoReturn:
         conn.commit()
 
 
-def get_all():
-    try:
-        conn = sqlite3.connect("ToDo.db")
-        cursor = conn.cursor()
-        res = cursor.execute("SELECT * FROM Tasks").fetchall()
-        conn.close()
-        return res
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
+def get_all() -> List:
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks").fetchall()
+    return res
 
 
-def change_status(id_, new_status):
-    try:
-        conn = sqlite3.connect("ToDo.db")
-        cursor = conn.cursor()
-        cursor.execute("""
-                    UPDATE Tasks 
-                    SET done = ? 
-                    WHERE id_ = ?
-                    """, (new_status, id_))
-        conn.commit()
-        conn.close()
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
+def change_status(id_: int, new_status: int) -> NoReturn:
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("""
+                UPDATE Tasks 
+                SET done = ? 
+                WHERE id_ = ?
+                """, (new_status, id_))
+    conn.commit()
 
 
-def get_status(id_):
-    try:
-        conn = sqlite3.connect("ToDo.db")
-        cursor = conn.cursor()
-        res = cursor.execute("SELECT done FROM Tasks WHERE id_ = ?", (id_, )).fetchall()
-        res = res[0][0]
-        conn.close()
-        return res
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
+def get_status(id_: int) -> str:
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT done FROM Tasks WHERE id_ = ?", (id_, )).fetchall()
+    res = res[0][0]
+    return res
 
 
-def get_today_tasks():
+def get_today_tasks() -> List:
     today = datetime.date.today()
-    try:
-        conn = sqlite3.connect("ToDo.db")
-        cursor = conn.cursor()
-        res = cursor.execute("SELECT * FROM Tasks WHERE date = ?", (today, )).fetchall()
-        conn.close()
-        return res
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks WHERE date = ?", (today, )).fetchall()
+    return res
 
 
-def get_overdue_tasks():
+def get_overdue_tasks() -> List:
     today = datetime.date.today()
-    try:
-        conn = sqlite3.connect("ToDo.db")
-        cursor = conn.cursor()
-        res = cursor.execute("SELECT * FROM Tasks WHERE date < ?", (today, )).fetchall()
-        conn.close()
-        return res
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
-
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks WHERE date < ?", (today, )).fetchall()
+    return res
