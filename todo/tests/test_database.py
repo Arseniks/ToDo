@@ -32,14 +32,12 @@ def test():
     database.add_task(task4)
     database.add_task(task5)
     database.add_task(task6)
-    assert [task1, task2] == database.get_today_tasks()
-
-
-
-
-
-
-
+    assert [task1] == database.get_today_tasks()
+    assert [task1, task2, task3, task4, task5, task6] == database.get_all()
+    assert [task4] == database.get_overdue_tasks()
+    assert [task6] == database.get_pending_tasks()
+    database.complete_task(task6.uuid)
+    assert [task6] != database.get_pending_tasks()
 
 
 

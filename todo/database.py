@@ -13,7 +13,7 @@ class DBConnector:
     def __init__(self):
 
         sqlite3.register_adapter(bool, int)
-        sqlite3.register_converter("bool", bool)
+        sqlite3.register_converter("bool", lambda x: bool(int(x.decode())))
 
         sqlite3.register_adapter(UUID, str)
         sqlite3.register_converter("uuid", lambda x: UUID(x.decode()))
@@ -99,6 +99,6 @@ def complete_task(uuid: UUID) -> NoReturn:
     cursor.execute("""
                 UPDATE Tasks 
                 SET done = 1 
-                WHERE id_ = ?
+                WHERE uuid = ?
                 """, (uuid, ))
     conn.commit()
