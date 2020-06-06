@@ -4,41 +4,49 @@ from dataclasses import dataclass, astuple
 from pathlib import Path
 from typing import Optional, NoReturn, List
 
+from uuid import UUID
+
 DB_PATH = Path("ToDo.db")
-CONNECTION = sqlite3.connect(DB_PATH)
 
 
-def get_conn() -> sqlite3.Connection:
-    return CONNECTION
+class DBConnector:
+    def __init__(self):
+
+        sqlite3.register_adapter(bool, int)
+        sqlite3.register_converter("bool", bool)
+
+        sqlite3.register_adapter(UUID, str)
+        sqlite3.register_converter("uuid", UUID)
+
+        if not Path(DB_PATH).exists():
+            conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+            cursor = conn.cursor()
+            cursor.execute("""CREATE TABLE Tasks
+                                      (uuid uuid, name text,
+                                       date date, done bool, description text)
+                                   """)
+            conn.commit()
+            self._conn = conn
+        else:
+            self._conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+
+    def __call__(self):
+        return self._conn
+
+
+get_conn = DBConnector()
 
 
 @dataclass
 class ToDo:
-    id_: int
+    uuid: UUID
     name: str
     date: datetime.date
-    done: int
+    done: bool
     description: Optional[str] = None
 
-
-def create_database() -> NoReturn:
-    """Проверяет наличие и создает базу данных."""
-    if not Path(DB_PATH).exists():
-        conn = get_conn()
-        cursor = conn.cursor()
-        cursor.execute("""CREATE TABLE Tasks
-                          (id_ integer, name text,
-                           date real, done integer, description text)
-                       """)
-        conn.commit()
-
-
-def write(todo: ToDo) -> NoReturn:
-    """Сохранение в базу."""
-    conn = get_conn()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", astuple(todo))
-    conn.commit()
+    def to_db_record(self) -> tuple:
+        return astuple(self)
 
 
 def get_all() -> List[ToDo]:
@@ -49,40 +57,48 @@ def get_all() -> List[ToDo]:
     return [ToDo(*todo) for todo in res]
 
 
-def change_status(id_: int, new_status: int) -> NoReturn:
-    """Меняет статус выполнения дела."""
+def get_overdue_tasks() -> List[ToDo]:
+    """Список дел просроченных и не законченых дел."""
+    today = datetime.date.today()
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks WHERE date < ? AND done = 0", (today, )).fetchall()
+    return [ToDo(*todo) for todo in res]
+
+
+def get_today_tasks() -> List[ToDo]:
+    """Список дел с окончанием сегодня и не законченых."""
+    today = datetime.date.today()
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks WHERE date = ? AND done = 0", (today, )).fetchall()
+    return [ToDo(*todo) for todo in res]
+
+
+def get_pending_tasks() -> List[ToDo]:
+    """Список дел с окончанием в будущем и не законченых."""
+    today = datetime.date.today()
+    conn = get_conn()
+    cursor = conn.cursor()
+    res = cursor.execute("SELECT * FROM Tasks WHERE date > ? AND done = 0", (today, )).fetchall()
+    return [ToDo(*todo) for todo in res]
+
+
+def add_task(todo: ToDo) -> NoReturn:
+    """Добавить новое задание."""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_db_record())
+    conn.commit()
+
+
+def complete_task(uuid: UUID) -> NoReturn:
+    """Завершает дело."""
     conn = get_conn()
     cursor = conn.cursor()
     cursor.execute("""
                 UPDATE Tasks 
-                SET done = ? 
+                SET done = 1 
                 WHERE id_ = ?
-                """, (new_status, id_))
+                """, (uuid, ))
     conn.commit()
-
-
-def get_status(id_: int) -> int:
-    """Получить статус дела."""
-    conn = get_conn()
-    cursor = conn.cursor()
-    res = cursor.execute("SELECT done FROM Tasks WHERE id_ = ?", (id_, )).fetchall()
-    res = res[0][0]
-    return res
-
-
-def get_today_tasks() -> List[ToDo]:
-    """Список дел с окончанием сегодня."""
-    today = datetime.date.today()
-    conn = get_conn()
-    cursor = conn.cursor()
-    res = cursor.execute("SELECT * FROM Tasks WHERE date = ?", (today, )).fetchall()
-    return [ToDo(*todo) for todo in res]
-
-
-def get_overdue_tasks() -> List[ToDo]:
-    """Список дел просроченных дел."""
-    today = datetime.date.today()
-    conn = get_conn()
-    cursor = conn.cursor()
-    res = cursor.execute("SELECT * FROM Tasks WHERE date < ?", (today, )).fetchall()
-    return [ToDo(*todo) for todo in res]
