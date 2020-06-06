@@ -1,11 +1,11 @@
 from todo import database
-from datetime import datetime, timedelta
+from datetime import timedelta, date
 import pytest
 from uuid import uuid1
 
 
 def get_today_date():
-    today = datetime.now()
+    today = date.today()
     return today
 
 
@@ -32,8 +32,6 @@ def test():
     database.add_task(task4)
     database.add_task(task5)
     database.add_task(task6)
-    print(database.get_all())
-
     assert [task1, task2] == database.get_today_tasks()
 
 

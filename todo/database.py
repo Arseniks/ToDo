@@ -16,7 +16,7 @@ class DBConnector:
         sqlite3.register_converter("bool", bool)
 
         sqlite3.register_adapter(UUID, str)
-        sqlite3.register_converter("uuid", UUID)
+        sqlite3.register_converter("uuid", lambda x: UUID(x.decode()))
 
         if not Path(DB_PATH).exists():
             conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
