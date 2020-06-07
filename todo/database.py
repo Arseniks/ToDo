@@ -1,12 +1,29 @@
 import sqlite3
 import datetime
-from dataclasses import dataclass, astuple
 from pathlib import Path
-from typing import Optional, NoReturn, List
+from typing import Optional, NoReturn, List, Any
 
+from pydantic import BaseModel
 from uuid import UUID
 
 DB_PATH = Path("ToDo.db")
+
+
+class ToDo(BaseModel):
+    uuid: UUID
+    name: str
+    date: datetime.date
+    done: bool
+    description: Optional[str] = None
+
+    @classmethod
+    def from_list(cls, *args):
+        """Конструктор из списка значений."""
+        return cls(**{name: value for name, value in zip(cls.__fields__, args)})
+
+    def to_list(self) -> List[Any]:
+        """Преобразовать в список значений полей."""
+        return [value for _, value in self]
 
 
 class DBConnector:
@@ -44,23 +61,11 @@ class DBConnector:
 get_conn = DBConnector()
 
 
-@dataclass
-class ToDo:
-    uuid: UUID
-    name: str
-    date: datetime.date
-    done: bool
-    description: Optional[str] = None
-
-    def to_db_record(self) -> tuple:
-        return astuple(self)
-
-
 def get_all() -> List[ToDo]:
     """Получение всех дел."""
     conn = get_conn()
     res = conn.execute("SELECT * FROM Tasks").fetchall()
-    return [ToDo(*todo) for todo in res]
+    return [ToDo.from_list(*todo) for todo in res]
 
 
 def get_overdue_tasks() -> List[ToDo]:
@@ -68,7 +73,7 @@ def get_overdue_tasks() -> List[ToDo]:
     today = datetime.date.today()
     conn = get_conn()
     res = conn.execute("SELECT * FROM Tasks WHERE date < ? AND done = 0", (today, )).fetchall()
-    return [ToDo(*todo) for todo in res]
+    return [ToDo.from_list(*todo) for todo in res]
 
 
 def get_today_tasks() -> List[ToDo]:
@@ -76,7 +81,7 @@ def get_today_tasks() -> List[ToDo]:
     today = datetime.date.today()
     conn = get_conn()
     res = conn.execute("SELECT * FROM Tasks WHERE date = ? AND done = 0", (today, )).fetchall()
-    return [ToDo(*todo) for todo in res]
+    return [ToDo.from_list(*todo) for todo in res]
 
 
 def get_pending_tasks() -> List[ToDo]:
@@ -84,13 +89,13 @@ def get_pending_tasks() -> List[ToDo]:
     today = datetime.date.today()
     conn = get_conn()
     res = conn.execute("SELECT * FROM Tasks WHERE date > ? AND done = 0", (today, )).fetchall()
-    return [ToDo(*todo) for todo in res]
+    return [ToDo.from_list(*todo) for todo in res]
 
 
 def add_task(todo: ToDo) -> NoReturn:
     """Добавить новое задание."""
     conn = get_conn()
-    conn.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_db_record())
+    conn.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_list())
     conn.commit()
 
 
