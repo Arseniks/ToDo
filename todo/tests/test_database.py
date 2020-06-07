@@ -61,3 +61,9 @@ def test_complete_task(tasks):
     assert tasks[5: 6] == database.get_pending_tasks()
     database.complete_task(tasks[5].uuid)
     assert [] == database.get_pending_tasks()
+
+
+def test_reopen_db(tasks, monkeypatch):
+    assert tasks == database.get_all()
+    monkeypatch.setattr(database.get_conn, "_conn", None)
+    assert tasks == database.get_all()
