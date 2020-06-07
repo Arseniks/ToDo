@@ -1,10 +1,13 @@
-import sqlite3
 import datetime
+import sqlite3
 from pathlib import Path
-from typing import Optional, NoReturn, List, Any
+from typing import Any
+from typing import List
+from typing import NoReturn
+from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel
-from uuid import UUID
 
 DB_PATH = Path("ToDo.db")
 
@@ -72,7 +75,7 @@ def get_overdue_tasks() -> List[ToDo]:
     """Список дел просроченных и не законченых дел."""
     today = datetime.date.today()
     conn = get_conn()
-    res = conn.execute("SELECT * FROM Tasks WHERE date < ? AND done = 0", (today, )).fetchall()
+    res = conn.execute("SELECT * FROM Tasks WHERE date < ? AND done = 0", (today,)).fetchall()
     return [ToDo.from_list(*todo) for todo in res]
 
 
@@ -80,7 +83,7 @@ def get_today_tasks() -> List[ToDo]:
     """Список дел с окончанием сегодня и не законченых."""
     today = datetime.date.today()
     conn = get_conn()
-    res = conn.execute("SELECT * FROM Tasks WHERE date = ? AND done = 0", (today, )).fetchall()
+    res = conn.execute("SELECT * FROM Tasks WHERE date = ? AND done = 0", (today,)).fetchall()
     return [ToDo.from_list(*todo) for todo in res]
 
 
@@ -88,7 +91,7 @@ def get_pending_tasks() -> List[ToDo]:
     """Список дел с окончанием в будущем и не законченых."""
     today = datetime.date.today()
     conn = get_conn()
-    res = conn.execute("SELECT * FROM Tasks WHERE date > ? AND done = 0", (today, )).fetchall()
+    res = conn.execute("SELECT * FROM Tasks WHERE date > ? AND done = 0", (today,)).fetchall()
     return [ToDo.from_list(*todo) for todo in res]
 
 
@@ -102,5 +105,5 @@ def add_task(todo: ToDo) -> NoReturn:
 def complete_task(uuid: UUID) -> NoReturn:
     """Завершает дело."""
     conn = get_conn()
-    conn.execute("UPDATE Tasks SET done = 1 WHERE uuid = ?", (uuid, ))
+    conn.execute("UPDATE Tasks SET done = 1 WHERE uuid = ?", (uuid,))
     conn.commit()
