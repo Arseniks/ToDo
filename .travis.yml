@@ -1,1 +1,9 @@
 language: python
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: 28e192b3e26314de642770fc0f87acdda4015cf6  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
