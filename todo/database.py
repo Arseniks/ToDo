@@ -1,3 +1,4 @@
+"""Опирации записи и чтения базы даных."""
 import datetime
 import sqlite3
 from pathlib import Path
@@ -41,7 +42,7 @@ class DBConnector:
 
     @staticmethod
     def _load_schema() -> str:
-        path = Path(__file__).parent / "schema.sql"
+        path = Path(__file__).parent / "make_db.sql"
         with open(path, "r") as f:
             return f.read()
 
