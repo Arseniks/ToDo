@@ -9,3 +9,7 @@ install:
 
 script:
   - pytest
+
+notifications:
+  email:
+    - senya.korotkov@gmail.com
