@@ -47,11 +47,11 @@ async def create_task(todo: ToDo):
     database.add_task(todo)
 
 
-@app.patch("/complete/")
+@app.patch("/toggle/")
 async def toggle_task(uuid: Uuid):
     """Переключает флаг завершенности дела."""
     database.toggle_task(uuid.uuid)
 
 
 if __name__ == "__main__":
-    uvicorn.run("rest:app", host="127.0.0.1", port=5000, log_level="info")
+    uvicorn.run(f"{__name__}:app", host="127.0.0.1", port=5000, log_level="info")

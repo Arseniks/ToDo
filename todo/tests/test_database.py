@@ -71,4 +71,5 @@ def test_toggle_task(tasks):
 def test_reopen_db(tasks, monkeypatch):
     assert tasks == database.get_all()
     monkeypatch.setattr(database.get_conn, "_conn", None)
+    print(database.get_all()[0].to_list())
     assert tasks == database.get_all()
