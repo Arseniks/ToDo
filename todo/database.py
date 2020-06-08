@@ -2,10 +2,7 @@
 import datetime
 import sqlite3
 from pathlib import Path
-from typing import Any
-from typing import List
-from typing import NoReturn
-from typing import Optional
+from typing import Optional, NoReturn, List, Any
 from uuid import UUID
 
 from pydantic import BaseModel
