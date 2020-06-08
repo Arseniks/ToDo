@@ -103,8 +103,10 @@ def add_task(todo: ToDo) -> NoReturn:
     conn.commit()
 
 
-def complete_task(uuid: UUID) -> NoReturn:
-    """Завершает дело."""
+def toggle_task(uuid: UUID) -> NoReturn:
+    """Переключает флаг завершенности дела."""
     conn = get_conn()
-    conn.execute("UPDATE Tasks SET done = 1 WHERE uuid = ?", (uuid,))
+    done, *_ = conn.execute("SELECT done FROM Tasks WHERE uuid = ?", (uuid,)).fetchone()
+    done = not done
+    conn.execute("UPDATE Tasks SET done = ? WHERE uuid = ?", (done, uuid))
     conn.commit()

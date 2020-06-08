@@ -60,10 +60,12 @@ def test_get_pending_tasks(tasks):
     assert tasks[5:6] == database.get_pending_tasks()
 
 
-def test_complete_task(tasks):
+def test_toggle_task(tasks):
     assert tasks[5:6] == database.get_pending_tasks()
-    database.complete_task(tasks[5].uuid)
+    database.toggle_task(tasks[5].uuid)
     assert [] == database.get_pending_tasks()
+    database.toggle_task(tasks[5].uuid)
+    assert tasks[5:6] == database.get_pending_tasks()
 
 
 def test_reopen_db(tasks, monkeypatch):
