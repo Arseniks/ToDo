@@ -1,5 +1,5 @@
 pytest==5.4.3
 pytest-cov==2.9.0
 pydantic==1.5.1
-fastapi
+fastapi==0.55.1
 uvicorn
