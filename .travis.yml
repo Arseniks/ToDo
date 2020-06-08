@@ -1,9 +1,10 @@
 language: python
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: 28e192b3e26314de642770fc0f87acdda4015cf6  # Set in the settings page of your repository, as a secure variable
-  keep_history: true
-  on:
-    branch: master
+python:
+  - "3.8"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - pytest
