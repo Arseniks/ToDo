@@ -1,14 +1,16 @@
-from datetime import date, timedelta
+from datetime import date
+from datetime import timedelta
 from uuid import uuid1
 
 import pytest
 from fastapi.testclient import TestClient
 
-from todo import database
-from todo import rest
-from todo.rest import Uuid
+import backend.endpoints
+from backend import database
+from backend import schema
+from backend.schema import Uuid
 
-client = TestClient(rest.app)
+client = TestClient(backend.endpoints.router)
 
 
 def get_today_date():
@@ -44,12 +46,12 @@ def make_db(monkeypatch, tmp_path):
     task5 = {'uuid': str(uuid1()), 'name': 'Сходить в аптеку', 'date': get_tomorrow_date(), 'done': False,
              'description': 'Капли для носа'}
 
-    client.post('/add/', data=database.ToDo(**task0).json())
-    client.post('/add/', data=database.ToDo(**task1).json())
-    client.post('/add/', data=database.ToDo(**task2).json())
-    client.post('/add/', data=database.ToDo(**task3).json())
-    client.post('/add/', data=database.ToDo(**task4).json())
-    client.post('/add/', data=database.ToDo(**task5).json())
+    client.post('/add/', data=schema.ToDo(**task0).json())
+    client.post('/add/', data=schema.ToDo(**task1).json())
+    client.post('/add/', data=schema.ToDo(**task2).json())
+    client.post('/add/', data=schema.ToDo(**task3).json())
+    client.post('/add/', data=schema.ToDo(**task4).json())
+    client.post('/add/', data=schema.ToDo(**task5).json())
 
     yield [task0, task1, task2, task3, task4, task5]
 

@@ -4,4 +4,4 @@
 [![Updates](https://pyup.io/repos/github/Arseniks/ToDo/shield.svg)](https://pyup.io/repos/github/Arseniks/ToDo/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-Маленький сервер для ведения ToDo.
+REST API сервис для управления ToDo на базе fastapi, pydantic и SQLite.

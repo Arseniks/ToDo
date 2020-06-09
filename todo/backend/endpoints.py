@@ -1,57 +1,46 @@
 """End points for REST API."""
 from typing import List
-from uuid import UUID
 
-import uvicorn
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import APIRouter
 
-from todo import database
-from todo.database import ToDo
+from backend import database
+from backend.schema import ToDo
+from backend.schema import Uuid
 
-
-class Uuid(BaseModel):
-    uuid: UUID
+router = APIRouter()
 
 
-app = FastAPI()
-
-
-@app.get("/all/")
-async def all_() -> List[ToDo]:
+@router.get("/all/", response_model=List[ToDo])
+async def all_():
     """Получение всех дел."""
     return database.get_all()
 
 
-@app.get("/overdue/")
-async def overdue() -> List[ToDo]:
+@router.get("/overdue/", response_model=List[ToDo])
+async def overdue():
     """Список дел просроченных и не законченых дел."""
     return database.get_overdue_tasks()
 
 
-@app.get("/today/")
-async def today() -> List[ToDo]:
+@router.get("/today/", response_model=List[ToDo])
+async def today():
     """Список дел с окончанием сегодня и не законченых."""
     return database.get_today_tasks()
 
 
-@app.get("/pending/")
-async def pending() -> List[ToDo]:
+@router.get("/pending/", response_model=List[ToDo])
+async def pending():
     """Список дел с окончанием в будущем и не законченых."""
     return database.get_pending_tasks()
 
 
-@app.post("/add/")
+@router.post("/add/")
 async def create_task(todo: ToDo):
     """Добавить новое задание."""
     database.add_task(todo)
 
 
-@app.patch("/toggle/")
+@router.patch("/toggle/")
 async def toggle_task(uuid: Uuid):
     """Переключает флаг завершенности дела."""
     database.toggle_task(uuid.uuid)
-
-
-if __name__ == "__main__":
-    uvicorn.run(f"{__name__}:app", host="127.0.0.1", port=5000, log_level="info")

@@ -4,7 +4,8 @@ from uuid import uuid1
 
 import pytest
 
-from todo import database
+from backend import database
+from backend import schema
 
 
 def get_today_date():
@@ -27,12 +28,12 @@ def make_db(monkeypatch, tmp_path):
     monkeypatch.setattr(database.get_conn, "_conn", None)
     monkeypatch.setattr(database, "DB_PATH", tmp_path / "ToDo.db")
 
-    task0 = database.ToDo.from_list(uuid1(), "Собраться в школу", get_today_date(), False, "Собрать еду и рюкзак")
-    task1 = database.ToDo.from_list(uuid1(), "Сходить в магазин", get_today_date(), True, "Купить воду и сок")
-    task2 = database.ToDo.from_list(uuid1(), "Собраться в школу", get_yesterday_date(), True, "Собрать еду и рюкзак")
-    task3 = database.ToDo.from_list(uuid1(), "Сходить в магазин", get_yesterday_date(), False, "Купить тортик")
-    task4 = database.ToDo.from_list(uuid1(), "Сделать дз", get_tomorrow_date(), True, "Математика и английский")
-    task5 = database.ToDo.from_list(uuid1(), "Сходить в аптеку", get_tomorrow_date(), False, "Капли дляя носа")
+    task0 = schema.ToDo.from_list(uuid1(), "Собраться в школу", get_today_date(), False, "Собрать еду и рюкзак")
+    task1 = schema.ToDo.from_list(uuid1(), "Сходить в магазин", get_today_date(), True, "Купить воду и сок")
+    task2 = schema.ToDo.from_list(uuid1(), "Собраться в школу", get_yesterday_date(), True, "Собрать еду и рюкзак")
+    task3 = schema.ToDo.from_list(uuid1(), "Сходить в магазин", get_yesterday_date(), False, "Купить тортик")
+    task4 = schema.ToDo.from_list(uuid1(), "Сделать дз", get_tomorrow_date(), True, "Математика и английский")
+    task5 = schema.ToDo.from_list(uuid1(), "Сходить в аптеку", get_tomorrow_date(), False, "Капли дляя носа")
 
     database.add_task(task0)
     database.add_task(task1)

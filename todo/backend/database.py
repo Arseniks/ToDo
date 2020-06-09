@@ -2,29 +2,12 @@
 import datetime
 import sqlite3
 from pathlib import Path
-from typing import Optional, NoReturn, List, Any
+from typing import List
+from typing import NoReturn
 from uuid import UUID
 
-from pydantic import BaseModel
-
-DB_PATH = Path("ToDo.db")
-
-
-class ToDo(BaseModel):
-    uuid: UUID
-    name: str
-    date: datetime.date
-    done: bool
-    description: Optional[str] = None
-
-    @classmethod
-    def from_list(cls, *args):
-        """Конструктор из списка значений."""
-        return cls(**{name: value for name, value in zip(cls.__fields__, args)})
-
-    def to_list(self) -> List[Any]:
-        """Преобразовать в список значений полей."""
-        return [value for _, value in self]
+from backend.config import DB_PATH
+from backend.schema import ToDo
 
 
 class DBConnector:
