@@ -31,3 +31,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest todo -v --cov=todo --cov-report=term-missing --cov-report=xml --setup-show
+    - name: Upload coverage to Codecov
+      run: |
+        pip install codecov
+        codecov --token=${{secrets.CODECOV_TOKEN}}
