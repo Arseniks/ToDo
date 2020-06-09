@@ -102,3 +102,5 @@ ENV/
 # PyTest
 **.pytest_cache/
 
+# Исключение db
+/db
