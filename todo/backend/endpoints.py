@@ -34,13 +34,13 @@ async def pending():
     return database.get_pending_tasks()
 
 
-@router.post("/add/")
-async def create_task(todo: ToDo):
-    """Добавить новое задание."""
-    database.add_task(todo)
-
-
 @router.patch("/toggle/")
 async def toggle_task(uuid: Uuid):
     """Переключает флаг завершенности дела."""
     database.toggle_task(uuid.uuid)
+
+
+@router.post("/add/")
+async def create_task(todo: ToDo):
+    """Добавить новое задание."""
+    database.add_task(todo)

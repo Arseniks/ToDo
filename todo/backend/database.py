@@ -76,13 +76,6 @@ def get_pending_tasks() -> List[ToDo]:
     return [ToDo.from_list(*todo) for todo in res]
 
 
-def add_task(todo: ToDo) -> NoReturn:
-    """Добавить новое задание."""
-    conn = get_conn()
-    conn.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_list())
-    conn.commit()
-
-
 def toggle_task(uuid: UUID) -> NoReturn:
     """Переключает флаг завершенности дела."""
     conn = get_conn()
@@ -91,4 +84,11 @@ def toggle_task(uuid: UUID) -> NoReturn:
     done = not done
     print(done)
     conn.execute("UPDATE Tasks SET done = ? WHERE uuid = ?", (done, uuid))
+    conn.commit()
+
+
+def add_task(todo: ToDo) -> NoReturn:
+    """Добавить новое задание."""
+    conn = get_conn()
+    conn.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_list())
     conn.commit()
