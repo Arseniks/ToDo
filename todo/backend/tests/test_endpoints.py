@@ -5,12 +5,12 @@ from uuid import uuid1
 import pytest
 from fastapi.testclient import TestClient
 
-import backend.endpoints
-from backend import database
-from backend import schema
-from backend.schema import Uuid
+from todo.backend import database
+from todo.backend import schema
+from todo.backend.endpoints import router
+from todo.backend.schema import Uuid
 
-client = TestClient(backend.endpoints.router)
+client = TestClient(router)
 
 
 def get_today_date():

@@ -6,8 +6,8 @@ from typing import List
 from typing import NoReturn
 from uuid import UUID
 
-from backend.config import DB_PATH
-from backend.schema import ToDo
+from todo.backend.config import DB_PATH
+from todo.backend.schema import ToDo
 
 
 class DBConnector:

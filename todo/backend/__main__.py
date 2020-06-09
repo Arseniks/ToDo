@@ -4,8 +4,8 @@ from pathlib import Path
 import uvicorn
 from fastapi import FastAPI
 
-from backend.config import PORT
-from backend.endpoints import router
+from todo.backend.config import PORT
+from todo.backend.endpoints import router
 
 app = FastAPI()
 

@@ -4,8 +4,8 @@ from uuid import uuid1
 
 import pytest
 
-from backend import database
-from backend import schema
+from todo.backend import database
+from todo.backend import schema
 
 
 def get_today_date():

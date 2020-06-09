@@ -3,9 +3,9 @@ from typing import List
 
 from fastapi import APIRouter
 
-from backend import database
-from backend.schema import ToDo
-from backend.schema import Uuid
+from todo.backend import database
+from todo.backend.schema import ToDo
+from todo.backend.schema import Uuid
 
 router = APIRouter()
 
