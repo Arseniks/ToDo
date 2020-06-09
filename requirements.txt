@@ -3,4 +3,4 @@ pytest-cov
 pydantic
 fastapi
 uvicorn
-requests
+requests==2.23.0
