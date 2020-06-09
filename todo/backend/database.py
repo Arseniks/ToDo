@@ -6,7 +6,7 @@ from typing import List
 from typing import NoReturn
 from uuid import UUID
 
-from todo.backend.config import DB_PATH
+from todo.backend import config
 from todo.backend.schema import ToDo
 
 
@@ -27,14 +27,14 @@ class DBConnector:
             return f.read()
 
     def _create_conn(self) -> NoReturn:
-        if not Path(DB_PATH).exists():
-            conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+        if not Path(config.DB_PATH).exists():
+            conn = sqlite3.connect(config.DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
             cursor = conn.cursor()
             cursor.execute(self._load_schema())
             conn.commit()
             self._conn = conn
         else:
-            self._conn = sqlite3.connect(DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+            self._conn = sqlite3.connect(config.DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
 
     def __call__(self) -> sqlite3.Connection:
         if self._conn is None:

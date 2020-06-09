@@ -4,6 +4,7 @@ from uuid import uuid1
 
 import pytest
 
+from todo.backend import config
 from todo.backend import database
 from todo.backend.schema import ToDo
 
@@ -26,7 +27,7 @@ def get_yesterday_date():
 @pytest.fixture(name="tasks")
 def make_db(monkeypatch, tmp_path):
     monkeypatch.setattr(database.get_conn, "_conn", None)
-    monkeypatch.setattr(database, "DB_PATH", tmp_path / "ToDo.db")
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "ToDo.db")
 
     task0 = ToDo.from_list(uuid1(), "Собраться в школу", get_today_date(), False, "Собрать еду и рюкзак")
     task1 = ToDo.from_list(uuid1(), "Сходить в магазин", get_today_date(), True, "Купить воду и сок")

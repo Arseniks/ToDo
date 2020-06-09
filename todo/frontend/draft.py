@@ -27,12 +27,7 @@ app = dash.Dash(__name__)
 
 
 def main_html():
-    app.layout = html.Div(
-        [
-            html.H1("Tasks manager"),
-            dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()),
-        ]
-    )
+    app.layout = html.Div([html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()), ])
 
 
 def get_tabs():
@@ -49,10 +44,7 @@ def get_all_tab():
 def get_table():
     return dt.DataTable(
         id="T_all",
-        columns=[
-            {"name": col, "id": col, "type": types}
-            for n, (col, types) in enumerate(zip(COLUMNS, TYPE))
-        ],
+        columns=[{"name": col, "id": col, "type": types} for n, (col, types) in enumerate(zip(COLUMNS, TYPE))],
         data=DATA_ALL,
         editable=True,
         sort_action="native",
@@ -67,9 +59,7 @@ def get_add_dialog():
     return [
         dcc.Input(placeholder="Name"),
         dcc.Textarea(placeholder="Description", style={"height": 100}),
-        dcc.DatePickerSingle(
-            display_format="YYYY-MM-DD", style={"borderRadius": "4px"}
-        ),
+        dcc.DatePickerSingle(display_format="YYYY-MM-DD", style={"borderRadius": "4px"}),
         html.Button("ADD", id="textarea-state-example-button"),
     ]
 
@@ -77,10 +67,7 @@ def get_add_dialog():
 @app.callback(
     Output(component_id="Overdue", component_property="children"),
     [Input(component_id="T_all", component_property="data_timestamp")],
-    [
-        State(component_id="T_all", component_property="active_cell"),
-        State(component_id="T_all", component_property="data"),
-    ],
+    [State(component_id="T_all", component_property="active_cell"), State(component_id="T_all", component_property="data"), ],
 )
 def controller(t, c, v):
     return print(t, c, v)
