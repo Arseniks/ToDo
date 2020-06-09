@@ -3,3 +3,4 @@ pytest-cov
 pydantic
 fastapi
 uvicorn
+requests
