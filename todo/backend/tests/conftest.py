@@ -28,9 +28,6 @@ def make_db(monkeypatch, tmp_path):
     monkeypatch.setattr(database.get_conn, "_conn", None)
     monkeypatch.setattr(database, "DB_PATH", tmp_path / "ToDo.db")
 
-    monkeypatch.setattr(database.get_conn, "_conn", None)
-    monkeypatch.setattr(database, "DB_PATH", tmp_path / "ToDo.db")
-
     task0 = ToDo.from_list(uuid1(), "Собраться в школу", get_today_date(), False, "Собрать еду и рюкзак")
     task1 = ToDo.from_list(uuid1(), "Сходить в магазин", get_today_date(), True, "Купить воду и сок")
     task2 = ToDo.from_list(uuid1(), "Собраться в школу", get_yesterday_date(), True, "Собрать еду и рюкзак")
