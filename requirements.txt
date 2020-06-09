@@ -1,6 +1,6 @@
 pytest
 pytest-cov
-pydantic
+pydantic==1.5.1
 fastapi
 uvicorn
 requests
