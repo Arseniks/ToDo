@@ -574,10 +574,9 @@ hr {
 /* Двойная граница и выравнивание около выбора даты
 ------------------------------------------------- */
 .SingleDatePickerInput__withBorder {
-  margin-top: 0.75rem;
-  padding: 0 2px;
-  border-radius: 2px;
-  border: 0 solid #dbdbdb;
+  border: 0 transparent;
+  border-radius: 0;
+  margin-left: 2px;
 }
 
 /* Clearing

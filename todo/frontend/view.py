@@ -49,7 +49,7 @@ class Data:
 
 def main_html():
     app.layout = html.Div(
-        [html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()), ])
+        [html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()), get_dialog()])
 
 
 def get_tabs():
@@ -62,19 +62,19 @@ def get_tabs():
 
 
 def get_today_tab():
-    return dcc.Tab(label="Today", value="Today", children=[get_today_table(), *get_dialog_today()], )
+    return dcc.Tab(label="Today", value="Today", children=[get_today_table()], )
 
 
 def get_overdue_tab():
-    return dcc.Tab(label="Overdue", value="Overdue", children=[get_overdue_table(), *get_dialog_overdue()], )
+    return dcc.Tab(label="Overdue", value="Overdue", children=[get_overdue_table()], )
 
 
 def get_pending_tab():
-    return dcc.Tab(label="Pending", value="Pending", children=[get_pending_table(), *get_dialog_pending()], )
+    return dcc.Tab(label="Pending", value="Pending", children=[get_pending_table()], )
 
 
 def get_all_tab():
-    return dcc.Tab(label="All", value="All", children=[get_all_table(), *get_dialog_all()], )
+    return dcc.Tab(label="All", value="All", children=[get_all_table()], )
 
 
 def get_today_table():
@@ -87,8 +87,9 @@ def get_today_table():
         sort_action="native",
         row_selectable="multi",
         selected_rows=[n for n, i in enumerate(data.today()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal", "maxWidth": 400},
-        style_table={"overflowY": "auto"},
+        style_cell={"textAlign": "left", "whiteSpace": "normal"},
+        style_table={"overflowY": "auto", "marginLeft": 6},
+        style_as_list_view=True,
     )
 
 
@@ -102,8 +103,9 @@ def get_overdue_table():
         sort_action="native",
         row_selectable="multi",
         selected_rows=[n for n, i in enumerate(data.overdue()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal", "maxWidth": 400},
-        style_table={"overflowY": "auto"},
+        style_cell={"textAlign": "left", "whiteSpace": "normal"},
+        style_table={"overflowY": "auto", "marginLeft": 6},
+        style_as_list_view=True,
     )
 
 
@@ -117,8 +119,9 @@ def get_pending_table():
         sort_action="native",
         row_selectable="multi",
         selected_rows=[n for n, i in enumerate(data.pending()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal", "maxWidth": 400},
-        style_table={"overflowY": "auto"},
+        style_cell={"textAlign": "left", "whiteSpace": "normal"},
+        style_table={"overflowY": "auto", "marginLeft": 6},
+        style_as_list_view=True,
     )
 
 
@@ -132,45 +135,19 @@ def get_all_table():
         sort_action="native",
         row_selectable="multi",
         selected_rows=[n for n, i in enumerate(data.all()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal", "maxWidth": 400},
-        style_table={"overflowY": "auto"},
+        style_cell={"textAlign": "left", "whiteSpace": "normal"},
+        style_table={"overflowY": "auto", "marginLeft": 6},
+        style_as_list_view=True,
     )
 
 
-def get_dialog_all():
-    return [
-        dcc.Input(placeholder="Name"),
+def get_dialog():
+    return html.Div([
+        html.H6("Add task"),
+        dcc.Input(placeholder="Name", style={"marginTop": 0}), dcc.DatePickerSingle(display_format="YYYY-MM-DD"),
         dcc.Textarea(placeholder="Description", style={"height": 100}),
-        dcc.DatePickerSingle(display_format="YYYY-MM-DD", style={"borderRadius": "4px"}),
-        html.Button("ADD", id="button_all"),
-    ]
-
-
-def get_dialog_today():
-    return [
-        dcc.Input(placeholder="Name"),
-        dcc.Textarea(placeholder="Description", style={"height": 100}),
-        dcc.DatePickerSingle(display_format="YYYY-MM-DD", style={"borderRadius": "4px"}),
-        html.Button("ADD", id="button_today"),
-    ]
-
-
-def get_dialog_pending():
-    return [
-        dcc.Input(placeholder="Name"),
-        dcc.Textarea(placeholder="Description", style={"height": 100}),
-        dcc.DatePickerSingle(display_format="YYYY-MM-DD", style={"borderRadius": "4px"}),
-        html.Button("ADD", id="button_pending"),
-    ]
-
-
-def get_dialog_overdue():
-    return [
-        dcc.Input(placeholder="Name"),
-        dcc.Textarea(placeholder="Description", style={"height": 100}),
-        dcc.DatePickerSingle(display_format="YYYY-MM-DD", style={"borderRadius": "4px"}),
-        html.Button("ADD", id="button_overdue"),
-    ]
+        html.Button("ADD", id="button_overdue")
+    ], style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480})
 
 
 if __name__ == "__main__":
