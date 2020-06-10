@@ -4,3 +4,4 @@ pydantic
 fastapi
 uvicorn
 requests
+dash
