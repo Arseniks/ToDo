@@ -4,4 +4,4 @@ pydantic
 fastapi
 uvicorn
 requests
-dash
+dash==1.12.0
