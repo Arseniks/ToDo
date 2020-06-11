@@ -47,98 +47,51 @@ class Data:
         return [{name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.all()]
 
 
+class Tab:
+    def __init__(self, name, data_):
+        self.name = name
+        self.data = data_
+
+    def get_table(self):
+        return dt.DataTable(
+            id=f"T_{self.name.lower()}",
+            columns=[{"name": col, "id": col, "type": types} for n, (col, types) in
+                     enumerate(zip(data.columns(), data.types()))],
+            data=self.data,
+            editable=True,
+            sort_action="native",
+            row_selectable="multi",
+            selected_rows=[n for n, i in enumerate(data.today()) if i[0]],
+            style_cell={"textAlign": "left", "whiteSpace": "normal"},
+            style_table={"overflowY": "auto", "marginLeft": 6},
+            style_as_list_view=True,
+        )
+
+    def get_tab(self):
+        return dcc.Tab(label=self.name, value=self.name, children=[self.get_table()], )
+
+
 def main_html():
+    print(get_tabs())
     app.layout = html.Div(
         [html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()), get_dialog()])
 
 
 def get_tabs():
+    today = Tab('Today', data.data_today())
+    today_tab = today.get_tab()
+    overdue = Tab('Overdue', data.data_overdue())
+    overdue_tab = overdue.get_tab()
+    pending = Tab('Pending', data.data_pending())
+    pending_tab = pending.get_tab()
+    all_ = Tab('All', data.data_all())
+    all_tab = all_.get_tab()
     return [
-        get_today_tab(),
-        get_overdue_tab(),
-        get_pending_tab(),
-        get_all_tab()
+        today_tab,
+        overdue_tab,
+        pending_tab,
+        all_tab
     ]
-
-
-def get_today_tab():
-    return dcc.Tab(label="Today", value="Today", children=[get_today_table()], )
-
-
-def get_overdue_tab():
-    return dcc.Tab(label="Overdue", value="Overdue", children=[get_overdue_table()], )
-
-
-def get_pending_tab():
-    return dcc.Tab(label="Pending", value="Pending", children=[get_pending_table()], )
-
-
-def get_all_tab():
-    return dcc.Tab(label="All", value="All", children=[get_all_table()], )
-
-
-def get_today_table():
-    return dt.DataTable(
-        id="T_today",
-        columns=[{"name": col, "id": col, "type": types} for n, (col, types) in
-                 enumerate(zip(data.columns(), data.types()))],
-        data=data.data_today(),
-        editable=True,
-        sort_action="native",
-        row_selectable="multi",
-        selected_rows=[n for n, i in enumerate(data.today()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal"},
-        style_table={"overflowY": "auto", "marginLeft": 6},
-        style_as_list_view=True,
-    )
-
-
-def get_overdue_table():
-    return dt.DataTable(
-        id="T_overdue",
-        columns=[{"name": col, "id": col, "type": types} for n, (col, types) in
-                 enumerate(zip(data.columns(), data.types()))],
-        data=data.data_overdue(),
-        editable=True,
-        sort_action="native",
-        row_selectable="multi",
-        selected_rows=[n for n, i in enumerate(data.overdue()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal"},
-        style_table={"overflowY": "auto", "marginLeft": 6},
-        style_as_list_view=True,
-    )
-
-
-def get_pending_table():
-    return dt.DataTable(
-        id="T_pending",
-        columns=[{"name": col, "id": col, "type": types} for n, (col, types) in
-                 enumerate(zip(data.columns(), data.types()))],
-        data=data.data_pending(),
-        editable=True,
-        sort_action="native",
-        row_selectable="multi",
-        selected_rows=[n for n, i in enumerate(data.pending()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal"},
-        style_table={"overflowY": "auto", "marginLeft": 6},
-        style_as_list_view=True,
-    )
-
-
-def get_all_table():
-    return dt.DataTable(
-        id="T_all",
-        columns=[{"name": col, "id": col, "type": types} for n, (col, types) in
-                 enumerate(zip(data.columns(), data.types()))],
-        data=data.data_all(),
-        editable=True,
-        sort_action="native",
-        row_selectable="multi",
-        selected_rows=[n for n, i in enumerate(data.all()) if i[0]],
-        style_cell={"textAlign": "left", "whiteSpace": "normal"},
-        style_table={"overflowY": "auto", "marginLeft": 6},
-        style_as_list_view=True,
-    )
 
 
 def get_dialog():
@@ -146,7 +99,7 @@ def get_dialog():
         html.H6("Add task"),
         dcc.Input(placeholder="Name", style={"marginTop": 0}), dcc.DatePickerSingle(display_format="YYYY-MM-DD"),
         dcc.Textarea(placeholder="Description", style={"height": 100}),
-        html.Button("ADD", id="button_overdue")
+        html.Button("ADD", id="button")
     ], style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480})
 
 
