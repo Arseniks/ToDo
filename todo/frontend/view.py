@@ -104,9 +104,9 @@ class Dialog(html.Div):
         super().__init__(
             children=[
                 html.H2("Add task"),
-                dcc.Input(style={"marginTop": 0}, placeholder="Name"),
-                dcc.DatePickerSingle(display_format="YYYY-MM-DD"),
-                dcc.Textarea(placeholder="Description", style={"height": 100}),
+                dcc.Input(id="input", style={"marginTop": 0}, placeholder="Name"),
+                dcc.DatePickerSingle(id="date", display_format="YYYY-MM-DD"),
+                dcc.Textarea(id="text", placeholder="Description", style={"height": 100}),
                 html.Button(children="ADD", id="button"),
             ],
             style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480},
