@@ -10,41 +10,47 @@ class TaskManager(html.Div):
 
     def __init__(self):
         tabs = [
-            TableTab("Today"),
-            TableTab("Overdue"),
-            TableTab("Pending"),
-            TableTab("All"),
+            Tab("Today"),
+            Tab("Overdue"),
+            Tab("Pending"),
+            Tab("All"),
         ]
 
         super().__init__(
             [
                 html.H1("Tasks manager"),
-                dcc.Tabs(id="tabs", value="Overdue", vertical=True, children=tabs),
+                dcc.Tabs(id="Tabs", vertical=True, children=tabs, value=None),
                 Dialog(),
             ]
         )
 
 
-class TableTab(dcc.Tab):
-    """Таблица с существующими ToDo."""
+class Tab(dcc.Tab):
+    """Вкладка с таблицей с существующими ToDo."""
 
     def __init__(self, name):
-        table = dt.DataTable(
-            id=f"T_{name.lower()}",
+        super().__init__(id=name, label=name, value=name)
+
+
+class Table(dt.DataTable):
+    """Таблица с существующими ToDo."""
+
+    def __init__(self, name, data, selected_rows):
+        super().__init__(
+            id=f"T_{name}",
             columns=[
                 {"name": "Name", "id": "name", "type": "text"},
                 {"name": "Date", "id": "date", "type": "datetime"},
                 {"name": "Description", "id": "description", "Description": "text"},
             ],
+            data=data,
+            selected_rows=selected_rows,
             editable=False,
             sort_action="native",
             row_selectable="multi",
             style_cell={"textAlign": "left", "whiteSpace": "normal"},
             style_table={"overflowY": "auto", "marginLeft": 6},
             style_as_list_view=True,
-        )
-        super().__init__(
-            id=f"Tab_{name.lower()}", label=name, value=name, children=table,
         )
 
 
