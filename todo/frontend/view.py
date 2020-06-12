@@ -71,11 +71,23 @@ class Tab:
         return dcc.Tab(label=self.name, value=self.name, children=[self.get_table()], )
 
 
-def main_html():
-    print(get_tabs())
-    app.layout = html.Div(
-        [html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()), get_dialog()])
+class Dialog(html.Div):
+    def __init__(self, children, style):
+        super().__init__()
+        self.children = children
+        self.style = style
 
+
+def main_html():
+    app.layout = html.Div(
+        [html.H1("Tasks manager"), dcc.Tabs(id="tabs", value="All", vertical=True, children=get_tabs()),
+         Dialog(children=[
+             html.H6('Add task'),
+             dcc.Input(style={'marginTop': 0}, placeholder='Name'),
+             dcc.DatePickerSingle(display_format='YYYY-MM-DD'),
+             dcc.Textarea(placeholder='Description', style={'height': 100}),
+             html.Button(children='ADD', id='button')],
+             style={'display': 'flex', 'flexFlow': 'column wrap', 'maxWidth': 480})])
 
 def get_tabs():
     today = Tab('Today', data.data_today())
@@ -92,15 +104,6 @@ def get_tabs():
         pending_tab,
         all_tab
     ]
-
-
-def get_dialog():
-    return html.Div([
-        html.H6("Add task"),
-        dcc.Input(placeholder="Name", style={"marginTop": 0}), dcc.DatePickerSingle(display_format="YYYY-MM-DD"),
-        dcc.Textarea(placeholder="Description", style={"height": 100}),
-        html.Button("ADD", id="button")
-    ], style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480})
 
 
 if __name__ == "__main__":
