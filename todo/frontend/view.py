@@ -1,8 +1,6 @@
-import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-import uvicorn
 
 
 class Data:
@@ -35,45 +33,55 @@ class Data:
         return [self.task0, self.task1, self.task2, self.task3, self.task4, self.task5]
 
     def data_overdue(self):
-        return [{name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.overdue()]
+        return [
+            {name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.overdue()
+        ]
 
     def data_today(self):
-        return [{name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.today()]
+        return [
+            {name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.today()
+        ]
 
     def data_pending(self):
-        return [{name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.pending()]
+        return [
+            {name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.pending()
+        ]
 
     def data_all(self):
         return [{name: value for name, value in zip(["id"] + self.columns(), i[1:])} for i in self.all()]
 
 
 class TaskManager(html.Div):
+    """HTML представление приложения по управлению ToDO."""
+
     def __init__(self):
         data = Data()
         tabs = [
-            TableTab('Today', data.data_today(), data.today()),
-            TableTab('Overdue', data.data_overdue(), data.overdue()),
-            TableTab('Pending', data.data_pending(), data.pending()),
-            TableTab('All', data.data_all(), data.all())
+            TableTab("Today", data.data_today(), data.today()),
+            TableTab("Overdue", data.data_overdue(), data.overdue()),
+            TableTab("Pending", data.data_pending(), data.pending()),
+            TableTab("All", data.data_all(), data.all()),
         ]
 
         super().__init__(
             [
                 html.H1("Tasks manager"),
                 dcc.Tabs(id="tabs", value="Overdue", vertical=True, children=tabs),
-                Dialog()
+                Dialog(),
             ]
         )
 
 
 class TableTab(dcc.Tab):
+    """Таблица с существующими ToDo."""
+
     def __init__(self, name, data, selected):
         table = dt.DataTable(
             id=f"T_{name.lower()}",
             columns=[
                 {"name": "Name", "id": "Name", "type": "text"},
                 {"name": "Date", "id": "Date", "type": "datetime"},
-                {"name": "Description", "id": "Name", "Description": "text"}
+                {"name": "Description", "id": "Description", "Description": "text"},
             ],
             data=data,
             editable=True,
@@ -84,27 +92,22 @@ class TableTab(dcc.Tab):
             style_table={"overflowY": "auto", "marginLeft": 6},
             style_as_list_view=True,
         )
-        super().__init__(label=name, value=name, children=[table], )
-
-
-class Dialog(html.Div):
-    def __init__(self):
-        super().__init__(children=[
-            html.H6('Add task'),
-            dcc.Input(style={'marginTop': 0}, placeholder='Name'),
-            dcc.DatePickerSingle(display_format='YYYY-MM-DD'),
-            dcc.Textarea(placeholder='Description', style={'height': 100}),
-            html.Button(children='ADD', id='button')],
-            style={'display': 'flex', 'flexFlow': 'column wrap', 'maxWidth': 480}
+        super().__init__(
+            label=name, value=name, children=[table],
         )
 
 
-if __name__ == "__main__":
-    app = dash.Dash(__name__)
-    app.layout = TaskManager()
-    uvicorn.run(f"{__name__}:app.server", interface="wsgi", host="0.0.0.0")
+class Dialog(html.Div):
+    """Диалог для ввода нового ToDO."""
 
-# Постановка галочки (4 варианта) selected_rows
-# Изменение существующего задания (4 варианта) data_timestamp
-# Добавление таска n_clicks
-# Переключение вкладок value
+    def __init__(self):
+        super().__init__(
+            children=[
+                html.H2("Add task"),
+                dcc.Input(style={"marginTop": 0}, placeholder="Name"),
+                dcc.DatePickerSingle(display_format="YYYY-MM-DD"),
+                dcc.Textarea(placeholder="Description", style={"height": 100}),
+                html.Button(children="ADD", id="button"),
+            ],
+            style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480},
+        )
