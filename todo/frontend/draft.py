@@ -85,7 +85,14 @@ def get_dialog():
         html.Button("ADD", id="textarea-state-example-button"),
     ]
 
-
+@app.callback(
+    Output(component_id="Overdue", component_property="children"),
+    [Input(component_id="T_all", component_property="data_timestamp")],
+    [
+        State(component_id="T_all", component_property="active_cell"),
+        State(component_id="T_all", component_property="data"),
+    ],
+)
 def controller(t, c, v):
     return print(t, c, v)
 
