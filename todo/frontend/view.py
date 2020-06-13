@@ -9,9 +9,7 @@ class TaskManager(html.Div):
     """HTML представление приложения по управлению ToDO."""
 
     def __init__(self):
-        super().__init__(
-            [html.H1("Tasks manager"), Tabs(), html.Div(id="Data"), Dialog(), ]
-        )
+        super().__init__([html.H1("Tasks manager"), Tabs(), html.Div(id="Data"), Dialog()])
 
 
 class Tabs(dcc.Tabs):

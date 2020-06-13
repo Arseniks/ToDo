@@ -51,7 +51,7 @@ def show_data(tab_name):
 @app.callback(
     Output(component_id="Table", component_property="sort_action"),
     [Input(component_id="Table", component_property="selected_row_ids")],
-    [State(component_id="Table", component_property="data"), ],
+    [State(component_id="Table", component_property="data")],
 )
 def toggle_todo(row_ids, data):
     """Сохраняет на сервер изменение флага завершенности дела."""
