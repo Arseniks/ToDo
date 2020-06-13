@@ -5,7 +5,7 @@ from pathlib import Path
 import uvicorn
 from fastapi import FastAPI
 
-from todo.backend import config
+from todo import config
 from todo.backend.endpoints import router
 
 app = FastAPI()
@@ -19,7 +19,12 @@ def main():
         type=str,
         help=f"path and file name of QSLite database [default: {config.DB_PATH}]",
     )
-    parser.add_argument("--port", default=config.PORT, type=int, help=f"bind socket to this port. [default: {config.PORT}]")
+    parser.add_argument(
+        "--port",
+        default=config.BACKEND_PORT,
+        type=int,
+        help=f"bind socket to this port. [default: {config.BACKEND_PORT}]",
+    )
     args = parser.parse_args()
     config.DB_PATH = Path(args.db_path)
 

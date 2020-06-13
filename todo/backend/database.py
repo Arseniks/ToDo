@@ -6,7 +6,7 @@ from typing import List
 from typing import NoReturn
 from uuid import UUID
 
-from todo.backend import config
+from todo import config
 from todo.backend.schema import ToDo
 
 
