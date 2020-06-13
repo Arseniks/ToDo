@@ -1,4 +1,6 @@
 """Обрабока результатов взаимодействия пользователя с интерфейсом."""
+from uuid import uuid1
+
 import dash
 import requests
 import uvicorn
@@ -6,12 +8,14 @@ from dash.dependencies import Input
 from dash.dependencies import Output
 from dash.dependencies import State
 
+from todo.backend.schema import ToDo, Uuid
 from todo.frontend import view
 
 app = dash.Dash(__name__)
+app.config.suppress_callback_exceptions = True
 app.layout = view.TaskManager()
 
-BASE_URL = "http://0.0.0.0:5001/"
+BASE_URL = "http://localhost:5000/"
 
 
 def make_url(endpoint: str) -> str:
@@ -56,6 +60,13 @@ def show_data(tab_name):
 def toggle_todo(row_ids, data):
     """Сохраняет на сервер изменение флага завершенности дела."""
     print(row_ids, data)
+    if row_ids is not None:
+        for i in row_ids:
+            data = list(filter(lambda x: i == x["id"], data))
+        for i in data:
+            id_ = i["id"]
+
+            requests.patch(make_url(f"toggle/"), Uuid(uuid=id_).json())
     return "native"
 
 
@@ -80,6 +91,18 @@ def add_todo(_, name, date, description, tab_name):
     Стирает информацию в диалоге и обнавляет отбражение данных.
     """
     print(_, name, date, description, tab_name)
+    if name is not None:
+        if description != '':
+            requests.post(make_url(f"add/"), ToDo(uuid=uuid1(),
+                                                  name=name,
+                                                  date=date,
+                                                  done=False,
+                                                  description=description).json())
+        else:
+            requests.post(make_url(f"add/"), ToDo(uuid=uuid1(),
+                                                  name=name,
+                                                  date=date,
+                                                  done=False).json())
     return "", date, "", tab_name
 
 
