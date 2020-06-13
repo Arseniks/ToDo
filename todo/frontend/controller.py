@@ -61,13 +61,14 @@ def toggle_todo(row_ids, data):
     """Сохраняет на сервер изменение флага завершенности дела."""
     print(row_ids, data)
     if row_ids is not None:
-        for i in row_ids:
-            data = list(filter(lambda x: i == x["id"], data))
-        for i in data:
-            id_ = i["id"]
-
-            requests.patch(make_url(f"toggle/"), Uuid(uuid=id_).json())
-    return "native"
+        row_ids = set(row_ids)
+        for todo in data:
+            if todo["id"] in row_ids and todo["done"] is False:
+                requests.patch(make_url(f"toggle/"), Uuid(uuid=todo["id"]).json())
+                return "native"
+            if todo["id"] not in row_ids and todo["done"] is True:
+                requests.patch(make_url(f"toggle/"), Uuid(uuid=todo["id"]).json())
+                return "native"
 
 
 @app.callback(
@@ -92,17 +93,10 @@ def add_todo(_, name, date, description, tab_name):
     """
     print(_, name, date, description, tab_name)
     if name is not None:
-        if description != '':
-            requests.post(make_url(f"add/"), ToDo(uuid=uuid1(),
-                                                  name=name,
-                                                  date=date,
-                                                  done=False,
-                                                  description=description).json())
-        else:
-            requests.post(make_url(f"add/"), ToDo(uuid=uuid1(),
-                                                  name=name,
-                                                  date=date,
-                                                  done=False).json())
+        requests.post(
+            make_url(f"add/"),
+            ToDo(uuid=uuid1(), name=name, date=date, done=False, description=description).json(),
+        )
     return "", date, "", tab_name
 
 
