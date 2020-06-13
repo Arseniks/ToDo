@@ -1,3 +1,4 @@
+""""Элементы визуального представления Web приложения."""
 from datetime import date
 
 import dash_core_components as dcc
@@ -6,14 +7,20 @@ import dash_table as dt
 
 
 class TaskManager(html.Div):
-    """HTML представление приложения по управлению ToDO."""
+    """HTML представление приложения по управлению ToDO.
+
+    - заголовок
+    - вкладки для переключения между разными представлениями ToDo
+    - блок с данными о ToDo
+    - диалог для добавления ToDo
+    """
 
     def __init__(self):
         super().__init__([html.H1("Tasks manager"), Tabs(), html.Div(id="Data"), Dialog()])
 
 
 class Tabs(dcc.Tabs):
-    """Набор вкладок с разными представленими дел."""
+    """Набор вкладок для переключения между разными представлениями ToDo."""
 
     def __init__(self):
         tabs = [
@@ -26,14 +33,14 @@ class Tabs(dcc.Tabs):
 
 
 class Tab(dcc.Tab):
-    """Вкладка с таблицей с существующими ToDo."""
+    """Вкладка для выбора представления ToDo."""
 
     def __init__(self, name):
         super().__init__(label=name, value=name)
 
 
 class NoToDo(html.H2):
-    """Сообщение об остсутсвии ToDo в данном представлении.."""
+    """Сообщение об остсутсвии ToDo в данном представлении."""
 
     def __init__(self):
         super().__init__("No todo", style={"marginLeft": 6})

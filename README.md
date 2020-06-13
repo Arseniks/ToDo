@@ -4,4 +4,6 @@
 [![Updates](https://pyup.io/repos/github/Arseniks/ToDo/shield.svg)](https://pyup.io/repos/github/Arseniks/ToDo/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-REST API сервис для управления ToDo на базе fastapi, pydantic и SQLite.
+Маленькое приложение по управлению ToDo:
+ - Backend - REST сервис на базе fastapi, pydantic и SQLite
+ - Frontend - Web приложение с использованием подхода Model-View-Controller на базе Dash
