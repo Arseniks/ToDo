@@ -8,6 +8,7 @@ from dash.dependencies import Input
 from dash.dependencies import Output
 from dash.dependencies import State
 
+from todo import config
 from todo.backend.schema import ToDo
 from todo.backend.schema import Uuid
 from todo.frontend import view
@@ -16,7 +17,7 @@ app = dash.Dash(__name__)
 app.config.suppress_callback_exceptions = True
 app.layout = view.TaskManager()
 
-BASE_URL = "http://localhost:5001/"
+BASE_URL = f"{config.BACKEND_URL}:{config.BACKEND_PORT}/"
 
 
 def make_url(endpoint: str) -> str:

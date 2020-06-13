@@ -8,8 +8,6 @@ from fastapi import FastAPI
 from todo import config
 from todo.backend.endpoints import router
 
-app = FastAPI()
-
 
 def main():
     parser = argparse.ArgumentParser(prog="todo.backend", description="REST server for ToDo")
@@ -28,8 +26,9 @@ def main():
     args = parser.parse_args()
     config.DB_PATH = Path(args.db_path)
 
+    app = FastAPI()
     app.include_router(router)
-    uvicorn.run(f"{__name__}:app", host="0.0.0.0", port=args.port, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=args.port, log_level="info")
 
 
 if __name__ == "__main__":
