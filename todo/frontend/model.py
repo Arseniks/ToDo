@@ -24,15 +24,16 @@ def load_data_and_selected(endpoint: str):
         todo["id"] = uuid
         if todo["done"]:
             selected_rows.append(num)
+    print(data, selected_rows)
     return data, selected_rows
 
 
 def save_toggle_task(uuid: str):
     """Сохраняет на сервер изменение флага завершенности дела."""
-    requests.patch(make_url(f"toggle/"), Uuid(uuid=uuid).json())
+    requests.patch(make_url("toggle/"), Uuid(uuid=uuid).json())
 
 
 def save_task(name: str, date: str, description: str):
     """Сохраняет новое ToDo на сервер."""
     todo = ToDo(uuid=uuid1(), name=name, date=date, done=False, description=description)
-    requests.post(make_url(f"add/"), todo.json())
+    requests.post(make_url("add/"), todo.json())
