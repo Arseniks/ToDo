@@ -7,3 +7,5 @@ exclude_lines =
 omit =
     */tests/*
     */__main__.py
+    */controller.py
+    */view.py

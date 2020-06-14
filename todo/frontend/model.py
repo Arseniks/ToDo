@@ -24,7 +24,6 @@ def load_data_and_selected(endpoint: str):
         todo["id"] = uuid
         if todo["done"]:
             selected_rows.append(num)
-    print(data, selected_rows)
     return data, selected_rows
 
 
