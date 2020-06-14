@@ -78,7 +78,7 @@ class Dialog(html.Div):
                 dcc.Input(id="Name", style={"marginTop": 0}, placeholder="Name"),
                 dcc.DatePickerSingle(id="Date", date=date.today(), display_format="YYYY-MM-DD"),
                 dcc.Textarea(id="Description", placeholder="Description", style={"height": 100}),
-                html.Button(id="Button", children="ADD", ),
+                html.Button(id="Button", children="ADD"),
             ],
             style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480},
         )

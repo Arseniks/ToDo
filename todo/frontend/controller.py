@@ -4,50 +4,17 @@ from typing import List
 from typing import NoReturn
 from typing import Optional
 from typing import Union
-from uuid import uuid1
 
-import requests
 from dash import Dash
 from dash.dependencies import Input
 from dash.dependencies import Output
 from dash.dependencies import State
 from pydantic import BaseModel
 
-from todo import config
-from todo.backend.schema import ToDo
-from todo.backend.schema import Uuid
+from todo.frontend import model
 from todo.frontend import view
 
 CONTROLLERS = []
-BASE_URL = f"{config.BACKEND_URL}:{config.BACKEND_PORT}/"
-
-
-def make_url(endpoint: str) -> str:
-    """Формирует полный url запроса к endpoint."""
-    return f"{BASE_URL}{endpoint}"
-
-
-def load_data_and_selected(endpoint: str):
-    """Получает данные c сервера и формирует данные для таблички и перечень выбранных рядов."""
-    data = requests.get(make_url(f"{endpoint}/")).json()
-    selected_rows = []
-    for num, todo in enumerate(data):
-        uuid = todo.pop("uuid")
-        todo["id"] = uuid
-        if todo["done"]:
-            selected_rows.append(num)
-    return data, selected_rows
-
-
-def save_toggle_task(uuid: str):
-    """Сохраняет на сервер изменение флага завершенности дела."""
-    requests.patch(make_url(f"toggle/"), Uuid(uuid=uuid).json())
-
-
-def save_task(name: str, date: str, description: str):
-    """Сохраняет новое ToDo на сервер."""
-    todo = ToDo(uuid=uuid1(), name=name, date=date, done=False, description=description)
-    requests.post(make_url(f"add/"), todo.json())
 
 
 class Controller(BaseModel):
@@ -71,7 +38,7 @@ def show_data(tab_name, _):
 
     При наличии сосздается таблица ToDo, а при отсутсвии сообщение об отсутсвии.
     """
-    data, selected = load_data_and_selected(tab_name.lower())
+    data, selected = model.load_data_and_selected(tab_name.lower())
     if data:
         table = view.TableToDo(data, selected)
     else:
@@ -97,7 +64,7 @@ def toggle_todo(row_ids, data, tab_name):
             uuid = todo["id"]
             done = todo["done"]
             if (uuid in row_ids and done is False) or (uuid not in row_ids and done is True):
-                save_toggle_task(uuid)
+                model.save_toggle_task(uuid)
                 break
     return tab_name
 
@@ -119,7 +86,7 @@ def add_todo(_, name, date, description):
     Стирает информацию в диалоге и обнавляет отбражение данных.
     """
     if name is not None:
-        save_task(name, date, description)
+        model.save_task(name, date, description)
     return "", date, "", "ADD"
 
 
