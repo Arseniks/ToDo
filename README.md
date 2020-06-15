@@ -28,7 +28,7 @@
 
     todo.backend [-h] [--db_path DB_PATH] [--port PORT]
 
-    REST server for ToDo - API docs at \docs\ endpoint
+    REST server for ToDo - API docs at \docs\
     
     optional arguments:
       -h, --help         show this help message and exit
