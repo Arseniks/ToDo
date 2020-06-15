@@ -10,7 +10,8 @@ from todo.backend.endpoints import router
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="todo.backend", description="REST server for ToDo")
+    description = "REST server for ToDo - API docs at \\docs\\ endpoint"
+    parser = argparse.ArgumentParser(prog="todo.backend", description=description, )
     parser.add_argument(
         "--db_path",
         default=config.DB_PATH,

@@ -14,7 +14,9 @@ from todo.frontend import view
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="todo", description="Small Web App for ToDo")
+    description = "Small Web App for ToDo\n\nDash app at \\ \nREST API docs at \\docs\\ "
+    formatter = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(prog="todo", description=description, formatter_class=formatter)
     parser.add_argument(
         "--db_path",
         default=config.DB_PATH,

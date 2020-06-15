@@ -12,26 +12,28 @@
 ## Запуск всего приложения
 
     todo [-h] [--db_path DB_PATH] [--port PORT]
-    
+
     Small Web App for ToDo
+    
+    Dash app at \ 
+    REST API docs at \docs\ 
     
     optional arguments:
       -h, --help         show this help message and exit
-      --db_path DB_PATH  path and file name of QSLite database [default: /Users/Senya/PycharmProjects/ToDo/db/ToDo.db]
+      --db_path DB_PATH  path and file name of QSLite database [default: db/ToDo.db]
       --port PORT        bind socket to this port [default: 5001]
 
 
 ## Запуск REST сервиса
 
     todo.backend [-h] [--db_path DB_PATH] [--port PORT]
-    
-    REST server for ToDo
+
+    REST server for ToDo - API docs at \docs\ endpoint
     
     optional arguments:
       -h, --help         show this help message and exit
-      --db_path DB_PATH  path and file name of QSLite database [default: /Users/Senya/PycharmProjects/ToDo/db/ToDo.db]
+      --db_path DB_PATH  path and file name of QSLite database [default: db/ToDo.db]
       --port PORT        bind socket to this port [default: 5001]
-
 
 ## Запуск Dash приложения
 
