@@ -28,6 +28,7 @@ class DBConnector:
 
     def _create_conn(self) -> NoReturn:
         if not Path(config.DB_PATH).exists():
+            Path(config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
             conn = sqlite3.connect(config.DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
             cursor = conn.cursor()
             cursor.execute(self._load_schema())
