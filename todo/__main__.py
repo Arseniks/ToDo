@@ -1,16 +1,20 @@
-"""REST API сервис для управления ToDo на базе fastapi, pydantic и SQLite."""
+"""Маленькое Web приложение по управлению ToDo."""
 import argparse
 from pathlib import Path
 
+import dash
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
 
 from todo import config
 from todo.backend.endpoints import router
+from todo.frontend import controller
+from todo.frontend import view
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="todo.backend", description="REST server for ToDo")
+    parser = argparse.ArgumentParser(prog="todo", description="Small Web App for ToDo")
     parser.add_argument(
         "--db_path",
         default=config.DB_PATH,
@@ -25,9 +29,16 @@ def main():
     )
     args = parser.parse_args()
     config.DB_PATH = Path(args.db_path)
+    config.BACKEND_URL_WITH_PORT = f"{config.BACKEND_URL}:{args.port}"
+
+    app_dash = dash.Dash(__name__, assets_folder="frontend/assets")
+    app_dash.config.suppress_callback_exceptions = True
+    app_dash.layout = view.TaskManager()
+    controller.activate_all(app_dash)
 
     app = FastAPI()
     app.include_router(router)
+    app.mount("/", WSGIMiddleware(app_dash.server))
 
     uvicorn.run(app, host="0.0.0.0", port=args.port, log_level="info")
 

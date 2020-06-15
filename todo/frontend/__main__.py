@@ -10,7 +10,7 @@ from todo.frontend import view
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="todo.frontend", description="dash client for ToDo")
+    parser = argparse.ArgumentParser(prog="todo.frontend", description="Dash client for ToDo")
     parser.add_argument(
         "--server",
         default=f"{config.BACKEND_URL_WITH_PORT}/",
@@ -33,6 +33,7 @@ def main():
     app.config.suppress_callback_exceptions = True
     app.layout = view.TaskManager()
     controller.activate_all(app)
+
     uvicorn.run(app.server, host="0.0.0.0", port=args.port, interface="wsgi")
 
 
