@@ -39,7 +39,7 @@
 
     todo.frontend [-h] [--server SERVER] [--port PORT]
     
-    dash client for ToDo
+    Dash client for ToDo
     
     optional arguments:
       -h, --help       show this help message and exit
