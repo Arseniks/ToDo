@@ -35,7 +35,7 @@
 
 ## Запуск Dash приложения
 
-    usage: todo.frontend [-h] [--server SERVER] [--port PORT]
+    todo.frontend [-h] [--server SERVER] [--port PORT]
     
     dash client for ToDo
     
