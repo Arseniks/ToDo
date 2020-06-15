@@ -5,5 +5,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Маленькое приложение по управлению ToDo:
- - Backend - REST сервис на базе fastapi, pydantic и SQLite
- - Frontend - Web приложение с использованием подхода Model-View-Controller на базе Dash
+ - Backend - REST сервис на базе FastAPI, pydantic и SQLite
+ - Frontend - Web приложение с использованием паттерна Model-View-Controller на базе Dash
+ - Запуск с помощью ASGI сервера Uvicorn

@@ -7,12 +7,10 @@ from todo import config
 from todo.backend.schema import ToDo
 from todo.backend.schema import Uuid
 
-BASE_URL = f"{config.BACKEND_URL}:{config.BACKEND_PORT}/"
-
 
 def make_url(endpoint: str) -> str:
     """Формирует полный url запроса к endpoint."""
-    return f"{BASE_URL}{endpoint}"
+    return f"{config.BACKEND_URL_WITH_PORT}/{endpoint}"
 
 
 def load_data_and_selected(endpoint: str):

@@ -21,7 +21,7 @@ def main():
         "--port",
         default=config.BACKEND_PORT,
         type=int,
-        help=f"bind socket to this port. [default: {config.BACKEND_PORT}]",
+        help=f"bind socket to this port [default: {config.BACKEND_PORT}]",
     )
     args = parser.parse_args()
     config.DB_PATH = Path(args.db_path)
