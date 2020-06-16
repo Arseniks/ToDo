@@ -5,14 +5,14 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
 
-class All extends Component {
+class Today extends Component {
     state = {
         error: null,
         isLoaded: false,
         items: []
     };
     componentDidMount() {
-        fetch("http://localhost:5000/all/")
+        fetch("http://localhost:5000/today/")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -27,7 +27,7 @@ class All extends Component {
             );
     }
     render() {
-        $('#all').attr('class', 'nav-link disabled');
+        $('#today').attr('class', 'nav-link disabled');
         const { error, isLoaded, items } = this.state;
         if (error) {
             return <div>Ошибка: {error.message}</div>;
@@ -37,9 +37,9 @@ class All extends Component {
             return (
                 <div className="container">
                     <Helmet>
-                        <title>All tasks - ToDo</title>
+                        <title>Today - ToDo</title>
                     </Helmet>
-                    <h1 className="text-center">Все задачи</h1> 
+                    <h1 className="text-center">Задачи на сегодня</h1> 
                     {items.map((item) => (
                         <Task item={item} key={item.uuid}/>
                     ))}
@@ -50,4 +50,4 @@ class All extends Component {
     }
 }
 
-export default All;
+export default Today;

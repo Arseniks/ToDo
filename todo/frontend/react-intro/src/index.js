@@ -6,7 +6,9 @@ import { Helmet } from 'react-helmet'
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import All from './all.js';
-import Add from './add.js'
+import Add from './add.js';
+import Today from './today.js';
+
 class Home extends Component {
     render() {
         return (
@@ -30,6 +32,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/all" component={All} />
                     <Route exact path="/add" component={Add} />
+                    <Route exact path="/today" component={Today} />
                 </div>
             </BrowserRouter>
         </div>

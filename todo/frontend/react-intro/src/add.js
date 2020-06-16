@@ -21,6 +21,7 @@ class Add extends Component {
         this.formSend = this.formSend.bind(this);
         this.chgName = this.chgName.bind(this);
         this.chgDescription = this.chgDescription.bind(this);
+        this.chgDate = this.chgDate.bind(this);
     }
     formSend(event) {
         event.preventDefault();
@@ -41,8 +42,8 @@ class Add extends Component {
     }
 
     chgDate(event) {
-        var arr = event.targer.value.split('.');
-        this.setState({year: Number(arr[2]), month: Number(arr[1]), day: Number(arr[0])});
+        var arr = event.target.value.split('-');
+        this.setState({year: Number(arr[0]), month: Number(arr[1]), day: Number(arr[2])});
     }
 
     render() {
@@ -73,7 +74,7 @@ class Add extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="descr">Срок выполнения</label>
-                                <input type="date" className="form-control" required/>
+                                <input type="date" className="form-control" onChange={this.chgDate} required/>
                                 <div className="invalid-feedback">
                                     Необходимо ввести срок выполнения
                                 </div>
