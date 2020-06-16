@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min'
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import $ from 'jquery';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
@@ -26,6 +27,7 @@ class All extends Component {
             );
     }
     render() {
+        $('#all').attr('class', 'nav-link disabled');
         const { error, isLoaded, items } = this.state;
         if (error) {
             return <div>Ошибка: {error.message}</div>;

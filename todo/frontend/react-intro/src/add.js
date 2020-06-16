@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min'
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import $ from 'jquery';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import { v4 as uuid } from 'uuid';
@@ -45,6 +46,7 @@ class Add extends Component {
     }
 
     render() {
+        $('#add').attr('class', 'nav-link disabled');
         var {validate} = this.state;
         return (
             <>
