@@ -16,8 +16,8 @@ class Task extends Component {
         done: this.props.item.done
     };
 
-    taskClick(id, done) {
-        this.setState({done:!this.state.done});
+    taskClick(id) {
+        this.setState((state) => ({done:!state.done}));
         fetch('http://localhost:5000/toggle/', {method:'PATCH', body:JSON.stringify({'uuid':id})});
     }
     render() {
@@ -30,7 +30,7 @@ class Task extends Component {
         }
         var cls = 'container rounded border m-3 p-3 bg-';
         return (
-            <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid, item.done)}>
+            <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid)}>
                 <div className="row">
                     <div className="col-4">
                         <h5>{item.name}</h5>
