@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet'
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import All from './all.js';
+import Add from './add.js'
 class Home extends Component {
     render() {
         return (
