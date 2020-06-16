@@ -37,8 +37,8 @@ class All extends Component {
                     <Helmet>
                         <title>All tasks - ToDo</title>
                     </Helmet>
-                    <h1 className="text-center">All tasks</h1> 
-                    {items.map((item, i) => (
+                    <h1 className="text-center">Все задачи</h1> 
+                    {items.map((item) => (
                         <Task item={item} key={item.uuid}/>
                     ))}
                 </div>

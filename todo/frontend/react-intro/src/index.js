@@ -10,12 +10,14 @@ import Add from './add.js'
 class Home extends Component {
     render() {
         return (
-        <>
-            <Helmet>
-                <title>Home - ToDo</title>
-            </Helmet>
-            <h1 className="text-center">Здравствуй, дорогой Пользователь!</h1>
-        </>
+            <>
+                <Helmet>
+                    <title>Home - ToDo</title>
+                </Helmet>
+                <h1 className="text-center">Здравствуй, дорогой Пользователь!</h1>
+                <a href="/all">To All tasks</a>
+                <a href="/add">To Add tasks</a>
+            </>
         );
     };
 }
@@ -27,6 +29,7 @@ function App() {
                 <div>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/all" component={All} />
+                    <Route exact path="/add" component={Add} />
                 </div>
             </BrowserRouter>
         </div>

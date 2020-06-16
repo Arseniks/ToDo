@@ -51,32 +51,32 @@ class Add extends Component {
                 <Helmet>
                     <title>Add - ToDo</title>
                 </Helmet>
-                <h1 className="text-center">Add Tasks</h1>
+                <h1 className="text-center">Добавить задачу</h1>
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <form className={validate ? "was-validated" : ""} noValidate onSubmit={this.formSend}>
                             <div className="form-group">
-                                <label htmlFor="name">Enter Name of your ToDo</label>
+                                <label htmlFor="name">Название</label>
                                 <input type="text" className="form-control" id="name" onChange={this.chgName} required/>
                                 <div className="invalid-feedback">
-                                    Please write name
+                                    Название не может быть пустым
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="descr">Enter description for your ToDo</label>
+                                <label htmlFor="descr">Описание</label>
                                 <textarea type="text" className="form-control" id="descr" onChange={this.chgDescription} required/>
                                 <div className="invalid-feedback">
-                                    Please write the description
+                                    Описание не может быть пустым
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="descr">Enter date for your ToDo</label>
+                                <label htmlFor="descr">Срок выполнения</label>
                                 <input type="date" className="form-control" required/>
                                 <div className="invalid-feedback">
-                                    Please enter date
+                                    Необходимо ввести срок выполнения
                                 </div>
                             </div>
-                            <button className="btn btn-primary" type="submit">Submit form</button>
+                            <button className="btn btn-primary" type="submit">Создать задачу</button>
                         </form>
                     </div>
                 </div>
