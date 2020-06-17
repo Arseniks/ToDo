@@ -10,18 +10,18 @@ import Today from './today.js';
 import Overdue from './overdue.js';
 import Pending from './pending.js';
 import Home from './home.js';
-//dnfmv fvkjndfvjkdf
+
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
                 <div>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/all" component={All} />
-                    <Route exact path="/add" component={Add} />
-                    <Route exact path="/today" component={Today} />
-                    <Route exact path="/overdue" component={Overdue} />
-                    <Route exact path="/pending" component={Pending} />
+                    <Route exact path="/" component={Home} /> {/*See home.js for code for /home*/}
+                    <Route exact path="/all" component={All} /> {/*See all.js for code for /all*/}
+                    <Route exact path="/add" component={Add} /> {/*See add.js for code for /add*/}
+                    <Route exact path="/today" component={Today} /> {/*See today.js for code for /today*/}
+                    <Route exact path="/overdue" component={Overdue} /> {/*See overdue.js for code for /overdue*/}
+                    <Route exact path="/pending" component={Pending} /> {/*See pending.js for code for /pending*/}
                 </div>
             </BrowserRouter>
         </div>

@@ -1,3 +1,16 @@
+# Running frontend
+
+1. First of all go to react-intro directory in your terminal.
+2. If you haven't installed it yet, install npm (node package maneger)
+3. Run `npm install` to install necessary packages
+4. Run `npm start` to start the application.
+
+If you want to change anything, you can open src directory, where you will find some JavaScript programs.
+The main one is `index.js`.
+You will find necessary "html" in render method of a class. 
+
+# React-intro README
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
