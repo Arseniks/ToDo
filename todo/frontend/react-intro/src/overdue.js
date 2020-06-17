@@ -4,6 +4,7 @@ import $ from 'jquery';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
+import { EmojiSmile } from 'react-bootstrap-icons';
 
 class Overdue extends Component {
     state = {
@@ -43,7 +44,7 @@ class Overdue extends Component {
                     {items.map((item) => (
                         <Task item={item} key={item.uuid}/>
                     ))}
-                    <p className="text-center">{items.length === 0 && "Нет просроченных заданий. Вы большой молодец!"}</p>
+                    <p className="text-center">{items.length === 0 && "Нет просроченных заданий. Ты большой молодец!"} {items.length === 0 && <EmojiSmile/>}</p>
                 </div>
             );
         }
