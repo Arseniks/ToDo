@@ -19,6 +19,7 @@ class Task extends Component {
     taskClick(id) {
         this.setState((state) => ({done:!state.done}));
         fetch('http://localhost:5000/toggle/', {method:'PATCH', body:JSON.stringify({'uuid':id})});
+        document.location.reload();
     }
     render() {
         var {item} = this.props;

@@ -5,14 +5,14 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
 
-class All extends Component {
+class Overdue extends Component {
     state = {
         error: null,
         isLoaded: false,
         items: []
     };
     componentDidMount() {
-        fetch("http://localhost:5000/all/")
+        fetch("http://localhost:5000/overdue/")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -27,7 +27,7 @@ class All extends Component {
             );
     }
     render() {
-        $('#all').attr('class', 'nav-link disabled');
+        $('#overdue').attr('class', 'nav-link disabled');
         const { error, isLoaded, items } = this.state;
         if (error) {
             return <div>Ошибка: {error.message}</div>;
@@ -37,17 +37,17 @@ class All extends Component {
             return (
                 <div className="container">
                     <Helmet>
-                        <title>All tasks - ToDo</title>
+                        <title>Overdue - ToDo</title>
                     </Helmet>
-                    <h1 className="text-center">Все задачи</h1> 
+                    <h1 className="text-center">Просроченные задания</h1> 
                     {items.map((item) => (
                         <Task item={item} key={item.uuid}/>
                     ))}
-                    <p className="text-center">{items.length === 0 && "Нет задач. Давайте добавим новую задачу!"}</p>
+                    <p className="text-center">{items.length === 0 && "Нет просроченных заданий. Вы большой молодец!"}</p>
                 </div>
             );
         }
     }
 }
 
-export default All;
+export default Overdue;
