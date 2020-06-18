@@ -42,7 +42,7 @@ class Today extends Component {
                     </Helmet>
                     <h1 className="text-center">Задачи на сегодня</h1> 
                     {items.map((item) => (
-                        <Task item={item} key={item.uuid}/>
+                        <Task item={item} key={item.uuid} delete={true}/>
                     ))}
                     <p className="text-center">{items.length === 0 && "Нет задач на сегодня. Можно идти отдыхать."} {items.length === 0 && <EmojiSmile/>}</p>
                 </div>

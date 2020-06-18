@@ -42,7 +42,7 @@ class Pending extends Component {
                     </Helmet>
                     <h1 className="text-center">Задания на будущее</h1> 
                     {items.map((item) => (
-                        <Task item={item} key={item.uuid}/>
+                        <Task item={item} key={item.uuid} delete={true}/>
                     ))}
                     <p className="text-center">{items.length === 0 && "Нет заданий на будущее. Ты большой молодец!"} {items.length === 0 && <EmojiSmile/>}</p>
                 </div>

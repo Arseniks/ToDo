@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min'
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import $ from 'jquery';
 import React, { Component } from 'react';
 import { XCircle, CheckCircle } from 'react-bootstrap-icons';
 
@@ -13,13 +14,19 @@ function Glyph(props) {
 }
 class Task extends Component {
     state = {
-        done: this.props.item.done
+        done: this.props.item.done,
+        delete: this.props.delete
     };
 
-    taskClick(id) {
+    taskClick(id, delet) {
         this.setState((state) => ({done:!state.done}));
         fetch('http://localhost:5000/toggle/', {method:'PATCH', body:JSON.stringify({'uuid':id})});
-        document.location.reload();
+        if (delet) {
+            $('#' + id + 'ts').remove();
+            if ($('p').text() === ' ' || $('p').text() === '') {
+                document.location.reload();
+            }
+        }
     }
     render() {
         var {item} = this.props;
@@ -31,7 +38,7 @@ class Task extends Component {
         }
         var cls = 'container rounded border m-3 p-3 bg-';
         return (
-            <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid)}>
+            <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid, this.state.delete)}>
                 <div className="row">
                     <div className="col-4">
                         <h5>{item.name}</h5>

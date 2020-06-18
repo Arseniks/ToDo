@@ -40,11 +40,11 @@ class All extends Component {
                     <Helmet>
                         <title>All tasks - ToDo</title>
                     </Helmet>
-                    <h1 className="text-center">Все задачи</h1> 
+                    <h1 className="text-center">Все задачи</h1>
                     {items.map((item) => (
-                        <Task item={item} key={item.uuid}/>
+                        <Task item={item} key={item.uuid} delete={false}/>
                     ))}
-                    <p className="text-center">{items.length === 0 && "Нет задач. Давай добавим новую задачу!"} {items.length === 0 && <EmojiSmile/>}</p>
+                    <p className="text-center">{items.length === 0 && "Нет задач. Давай добавим новую задачу!"} {items.length === 0 && <EmojiSmile />}</p>
                 </div>
             );
         }
