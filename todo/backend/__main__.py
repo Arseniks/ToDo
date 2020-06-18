@@ -8,10 +8,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from todo.backend.config import PORT
 from todo.backend.endpoints import router
 
+import json
+
 app = FastAPI()
 
+conf = open("./ToDo/todo/frontend/react-intro/src/config.json", "r")
+data = json.load(conf)["frontend"]
+
 origins = [
-    "http://localhost:3000",
+    "http://" + data["host"] + ":" + str(data["port"]),
 ]
 
 app.add_middleware(

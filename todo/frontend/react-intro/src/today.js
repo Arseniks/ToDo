@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
 import { EmojiSmile } from 'react-bootstrap-icons';
+import * as config from './config.json';
 
 class Today extends Component {
     state = {
@@ -13,7 +14,9 @@ class Today extends Component {
         items: []
     };
     componentDidMount() {
-        fetch("http://localhost:5000/today/")
+        var host = config.backend.host;
+        var port = config.backend.port;
+        fetch(`http://${host}:${port}/today/`)
             .then(res => res.json())
             .then(
                 (result) => {

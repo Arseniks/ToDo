@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
 import { EmojiSmile } from 'react-bootstrap-icons';
+import * as config from './config.json';
 
 class Overdue extends Component {
     state = {
@@ -13,7 +14,9 @@ class Overdue extends Component {
         items: []
     };
     componentDidMount() {
-        fetch("http://localhost:5000/overdue/")
+        var host = config.backend.host;
+        var port = config.backend.port;
+        fetch(`http://${host}:${port}/overdue/`)
             .then(res => res.json())
             .then(
                 (result) => {

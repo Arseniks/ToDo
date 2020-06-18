@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import Task from './task.js';
 import { EmojiSmile } from 'react-bootstrap-icons';
+import * as config from './config.json';
 
 class Pending extends Component {
     state = {
@@ -13,7 +14,9 @@ class Pending extends Component {
         items: []
     };
     componentDidMount() {
-        fetch("http://localhost:5000/pending/")
+        var host = config.backend.host;
+        var port = config.backend.port;
+        fetch(`http://${host}:${port}/pending/`)
             .then(res => res.json())
             .then(
                 (result) => {

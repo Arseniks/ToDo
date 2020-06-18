@@ -3,6 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import $ from 'jquery';
 import React, { Component } from 'react';
 import { XCircle, CheckCircle } from 'react-bootstrap-icons';
+import * as config from './config.json';
 
 function Glyph(props) {
     var { done , id } = props;
@@ -20,7 +21,9 @@ class Task extends Component {
 
     taskClick(id, delet) {
         this.setState((state) => ({done:!state.done}));
-        fetch('http://localhost:5000/toggle/', {method:'PATCH', body:JSON.stringify({'uuid':id})});
+        var host = config.backend.host;
+        var port = config.backend.port;
+        fetch(`http://${host}:${port}/toggle/`, {method:'PATCH', body:JSON.stringify({'uuid':id})});
         if (delet) {
             $('#' + id + 'ts').remove();
             if ($('p').text() === ' ' || $('p').text() === '') {
@@ -38,6 +41,16 @@ class Task extends Component {
             day: 'numeric'
         });
     }
+    componentDidUpdate() {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $(".m-3").toggleClass("m-3").toggleClass("my-3");
+        }
+    }
+    componentDidMount() {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $(".m-3").toggleClass("m-3").toggleClass("my-3");
+        }
+    }
 
     render() {
         var {item} = this.props;
@@ -52,12 +65,12 @@ class Task extends Component {
             <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid, this.state.delete)}>
                 <div className="row">
                     <div className="col-3">
-                        <h5>{item.name}</h5>
+                        <h5 className="text-break">{item.name}</h5>
                     </div>
                     <div className="col-9 row">
                         <p className="col-7 text-break">{item.description}</p>
-                        <p className="col-4 p-0">{this.getDate(item.date)}</p>
-                        <p className="col-1 text-right" id={item.uuid + 'gl'}><Glyph done={this.state.done} /></p>
+                        <p className="col-3 p-0">{this.getDate(item.date)}</p>
+                        <p className="col-2 text-right" id={item.uuid + 'gl'}><Glyph done={this.state.done} /></p>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,8 @@ If you want to change anything, you can open src directory, where you will find 
 The main one is `index.js`.
 You will find necessary "html" in render method of a class. 
 
+You have to specify your backend host and port in config.json in react-intro/src 
+
 # React-intro README
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

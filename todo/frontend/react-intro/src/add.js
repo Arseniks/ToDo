@@ -4,6 +4,7 @@ import $ from 'jquery';
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet'
 import { v4 as uuid } from 'uuid';
+import * as config from './config.json';
 
 class Add extends Component {
     constructor(props) {
@@ -28,7 +29,9 @@ class Add extends Component {
         this.setState({validate: true});
         var { name, descr, year, month, day} = this.state;
         if (name !== "" && descr !== "") {
-            fetch("http://localhost:5000/add/", {method:"POST", body:JSON.stringify({"uuid":uuid(), "name":name, "description":descr, "date": year.toString() + '-' + month.toString() + '-' + day.toString(), "done": false})});
+            var host = config.backend.host;
+            var port = config.backend.port;
+            fetch(`http://${host}:${port}/add/`, {method:"POST", body:JSON.stringify({"uuid":uuid(), "name":name, "description":descr, "date": year.toString() + '-' + month.toString() + '-' + day.toString(), "done": false})});
             document.location.href = "/all";
         }
     }
