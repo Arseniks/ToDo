@@ -1,7 +1,7 @@
 # Running frontend
 
 1. First of all go to react-intro directory in your terminal.
-2. If you haven't installed it yet, install npm (node package maneger)
+2. If you haven't installed it yet, install npm (install [node.js](https://nodejs.org/en/download/) and npm will be installed automaticaly)
 3. Run `npm install` to install necessary packages
 4. Run `npm start` to start the application.
 
