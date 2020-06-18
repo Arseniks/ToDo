@@ -28,6 +28,17 @@ class Task extends Component {
             }
         }
     }
+
+    getDate(date) {
+        var dt = new Date(date);
+        return dt.toLocaleString('ru', {
+            weekday: "short",
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
     render() {
         var {item} = this.props;
         var color;
@@ -40,12 +51,13 @@ class Task extends Component {
         return (
             <div id={item.uuid + 'ts'} className={cls.concat(color)} onClick={this.taskClick.bind(this, item.uuid, this.state.delete)}>
                 <div className="row">
-                    <div className="col-4">
+                    <div className="col-3">
                         <h5>{item.name}</h5>
                     </div>
-                    <div className="col-8 row">
-                        <p className="col-10">{item.description}</p>
-                        <p className="col-2 text-right" id={item.uuid + 'gl'}><Glyph done={this.state.done} /></p>
+                    <div className="col-9 row">
+                        <p className="col-7 text-break">{item.description}</p>
+                        <p className="col-4 p-0">{this.getDate(item.date)}</p>
+                        <p className="col-1 text-right" id={item.uuid + 'gl'}><Glyph done={this.state.done} /></p>
                     </div>
                 </div>
             </div>
