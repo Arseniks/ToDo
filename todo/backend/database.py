@@ -93,3 +93,10 @@ def add_task(todo: ToDo) -> NoReturn:
     conn = get_conn()
     conn.execute("INSERT INTO Tasks VALUES (?,?,?,?,?)", todo.to_list())
     conn.commit()
+
+
+def delete_all() -> NoReturn:
+    """Очистить Базу данных"""
+    conn = get_conn()
+    conn.execute("DELETE FROM Tasks")
+    conn.commit()
