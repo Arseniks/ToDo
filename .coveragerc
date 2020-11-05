@@ -6,6 +6,3 @@ exclude_lines =
     if __name__ == .__main__.:
 omit =
     */tests/*
-    */__main__.py
-    */controller.py
-    */view.py
