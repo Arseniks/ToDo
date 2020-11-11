@@ -4,5 +4,5 @@ pytest-mock
 pydantic
 fastapi
 uvicorn
-requests
+requests==2.25.0
 dash
