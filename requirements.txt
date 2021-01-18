@@ -1,5 +1,5 @@
 pytest
-pytest-cov
+pytest-cov==2.11.0
 pytest-mock
 pydantic
 fastapi
