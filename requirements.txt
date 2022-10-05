@@ -1,6 +1,6 @@
 pytest
 pytest-cov
-pytest-mock
+pytest-mock==3.10.0
 pydantic
 fastapi
 uvicorn
