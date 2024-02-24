@@ -1,4 +1,4 @@
-pytest
+pytest==8.0.2
 pytest-cov
 pytest-mock
 pydantic
