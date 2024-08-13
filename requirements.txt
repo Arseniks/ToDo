@@ -3,6 +3,6 @@ pytest-cov
 pytest-mock
 pydantic
 fastapi
-uvicorn
+uvicorn==0.30.6
 requests
 dash
