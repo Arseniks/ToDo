@@ -36,7 +36,7 @@ class Controller(BaseModel):
 def show_data(tab_name, _):
     """Загружает и отображает данные.
 
-    При наличии сосздается таблица ToDo, а при отсутсвии сообщение об отсутсвии.
+    При наличии создается таблица ToDo, а при отсутсвии сообщение об отсутсвии.
     """
     data, selected = model.load_data_and_selected(tab_name.lower())
     if data:

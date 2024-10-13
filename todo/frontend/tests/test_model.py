@@ -72,7 +72,7 @@ def test_save_toggle_task(mocker):
     model.save_toggle_task("fe6cd179-a8da-11ea-af26-d46d6da674b6")
 
     model.requests.patch.assert_called_once_with(
-        "http://localhost:5001/toggle/", '{"uuid": "fe6cd179-a8da-11ea-af26-d46d6da674b6"}'
+        "http://localhost:5001/toggle/", '{"uuid":"fe6cd179-a8da-11ea-af26-d46d6da674b6"}'
     )
 
 
