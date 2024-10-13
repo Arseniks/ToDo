@@ -29,9 +29,18 @@ class DBConnector:
     def _create_conn(self) -> NoReturn:
         if not Path(config.DB_PATH).exists():
             Path(config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
-            conn = sqlite3.connect(config.DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+            conn = sqlite3.connect(config.DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
             cursor = conn.cursor()
             cursor.execute(self._load_schema())
+
+            cursor.execute('''
+                CREATE TRIGGER IF NOT EXISTS update_zero_name
+                AFTER INSERT ON Tasks
+                BEGIN
+                    UPDATE Tasks SET name = 'Задача' WHERE uuid = NEW.uuid AND (name IS NULL OR name = '');
+                END;
+            ''')
+
             conn.commit()
             self._conn = conn
         else:
@@ -80,13 +89,13 @@ def get_pending_tasks() -> List[ToDo]:
 def toggle_task(uuid: UUID) -> NoReturn:
     """Переключает флаг завершенности дела."""
     conn = get_conn()
-    done, *_ = conn.execute("SELECT done FROM Tasks WHERE uuid = ?", (uuid,)).fetchone()
-    print(done)
-    done = not done
-    print(done)
+    conn.create_function("switch_done", 1, switch_done)
+    done, *_ = conn.execute("SELECT switch_done(done) FROM Tasks WHERE uuid = ?", (uuid,)).fetchone()
     conn.execute("UPDATE Tasks SET done = ? WHERE uuid = ?", (done, uuid))
     conn.commit()
 
+def switch_done(done: int) -> int:
+    return not done
 
 def add_task(todo: ToDo) -> NoReturn:
     """Добавить новое задание."""
