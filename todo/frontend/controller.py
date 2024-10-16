@@ -33,6 +33,39 @@ class Controller(BaseModel):
         arbitrary_types_allowed = True
 
 
+def search_todo(_, name, date, description):
+    """Ищет дела по входным данным.
+
+    При наличии создается таблица ToDo, а при отсутсвии сообщение об отсутсвии.
+    """
+    table = view.NoToDo()
+    if name is not None:
+        data, selected = model.search_task(name, date, description)
+
+        if data:
+            table = view.TableToDo(data, selected)
+
+    return "", date, "", "ПОИСК", table
+
+
+Controller(
+    output=[
+        Output(component_id="SearchName", component_property="value"),
+        Output(component_id="SearchDate", component_property="date"),
+        Output(component_id="SearchDescription", component_property="value"),
+        Output(component_id="SearchButton", component_property="children"),
+        Output(component_id="SearchData", component_property="children"),
+    ],
+    inputs=[Input(component_id="SearchButton", component_property="n_clicks")],
+    state=[
+        State(component_id="SearchName", component_property="value"),
+        State(component_id="SearchDate", component_property="date"),
+        State(component_id="SearchDescription", component_property="value"),
+    ],
+    func=search_todo,
+)
+
+
 def show_data(tab_name, _):
     """Загружает и отображает данные.
 
@@ -87,7 +120,7 @@ def add_todo(_, name, date, description):
     """
     if name is not None:
         model.save_task(name, date, description)
-    return "", date, "", "ADD"
+    return "", date, "", "ДОБАВИТЬ"
 
 
 Controller(

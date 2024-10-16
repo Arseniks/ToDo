@@ -1,10 +1,10 @@
 """End points for REST API."""
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from todo.backend import database
-from todo.backend.schema import ToDo
+from todo.backend.schema import ToDo, SearchData
 from todo.backend.schema import Uuid
 
 router = APIRouter()
@@ -14,6 +14,11 @@ router = APIRouter()
 async def all_():
     """Получение всех дел."""
     return database.get_all()
+
+@router.post("/search/", response_model=List[ToDo])
+async def search_(search_data: SearchData):
+    """Список дел по входным параметрам."""
+    return database.search(search_data.name, search_data.description, search_data.date)
 
 
 @router.get("/overdue/", response_model=List[ToDo])

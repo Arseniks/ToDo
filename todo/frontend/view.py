@@ -16,8 +16,28 @@ class TaskManager(html.Div):
     """
 
     def __init__(self):
-        super().__init__([html.H1("Менеджер задач"), Tabs(), html.Div(id="Data"), Dialog()])
+        super().__init__([
+            html.H1("Менеджер задач"),
+            Search(),
+            html.Div(id="SearchData", style={"margin": 20}),
+            Tabs(),
+            html.Div(id="Data"),
+            Dialog()
+        ])
 
+
+class Search(html.Div):
+    """Входные данные для поиска по ToDo."""
+    def __init__(self):
+            super().__init__(
+                children=[
+                    dcc.Input(id="SearchName", placeholder="Название"),
+                    dcc.DatePickerSingle(id="SearchDate", display_format="YYYY-MM-DD"),
+                    dcc.Input(id="SearchDescription", placeholder="Описание"),
+                    html.Button(id="SearchButton", children="Поиск"),
+                ],
+                style={"display": "flex", "flexFlow": "column wrap", "maxWidth": 480, "maxHeight": 80, "textAlign": "right", "margin": 20},
+            )
 
 class Tabs(dcc.Tabs):
     """Набор вкладок для переключения между разными представлениями ToDo."""
@@ -51,7 +71,7 @@ class TableToDo(dt.DataTable):
 
     def __init__(self, data, selected_rows):
         super().__init__(
-            id=f"Table",
+            id="Table",
             columns=[
                 {"name": "Имя", "id": "name", "type": "text"},
                 {"name": "Дата", "id": "date", "type": "datetime"},
@@ -75,7 +95,7 @@ class Dialog(html.Div):
         super().__init__(
             children=[
                 html.H2("Add task"),
-                dcc.Input(id="Name", style={"marginTop": 0}, placeholder="Названия"),
+                dcc.Input(id="Name", style={"marginTop": 0}, placeholder="Название"),
                 dcc.DatePickerSingle(id="Date", date=date.today(), display_format="YYYY-MM-DD"),
                 dcc.Textarea(id="Description", placeholder="Описание", style={"height": 100}),
                 html.Button(id="Button", children="ДОБАВИТЬ"),
