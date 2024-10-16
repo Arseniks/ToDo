@@ -24,6 +24,10 @@ class ToDo(BaseModel):
         """Преобразовать в список значений полей."""
         return [value for _, value in self]
 
+class SearchData(BaseModel):
+    name: str
+    date:  Optional[datetime.date] = None
+    description: Optional[str] = None
 
 class Uuid(BaseModel):
     uuid: UUID

@@ -2,7 +2,7 @@
 import datetime
 import sqlite3
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 from typing import NoReturn
 from uuid import UUID
 
@@ -62,6 +62,18 @@ def get_all() -> List[ToDo]:
     return [ToDo.from_list(*todo) for todo in res]
 
 
+def search(name: str, description: str, date: Optional[datetime.date]) -> List[ToDo]:
+    """Поиск дел по входным параметрам."""
+    conn = get_conn()
+    name_like = name + "%"
+    description_like = description + "%"
+    if date is None:
+        res = conn.execute("SELECT * FROM Tasks WHERE name LIKE ? AND description LIKE ?", (name_like,description_like)).fetchall()
+    else:
+        res = conn.execute("SELECT * FROM Tasks WHERE name LIKE ? AND description LIKE ? AND DATE = ?", (name_like,description_like, date)).fetchall()
+    return [ToDo.from_list(*todo) for todo in res]
+
+
 def get_overdue_tasks() -> List[ToDo]:
     """Список дел просроченных и не законченых дел."""
     today = datetime.date.today()
@@ -94,8 +106,10 @@ def toggle_task(uuid: UUID) -> NoReturn:
     conn.execute("UPDATE Tasks SET done = ? WHERE uuid = ?", (done, uuid))
     conn.commit()
 
+
 def switch_done(done: int) -> int:
     return not done
+
 
 def add_task(todo: ToDo) -> NoReturn:
     """Добавить новое задание."""
