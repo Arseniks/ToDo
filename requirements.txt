@@ -3,7 +3,7 @@ pytest-cov
 pytest-mock
 pydantic
 fastapi
-uvicorn
+uvicorn==0.24.0.post1
 requests
 dash
 httpx
