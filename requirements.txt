@@ -1,7 +1,7 @@
 pytest
 pytest-cov
 pytest-mock
-pydantic
+pydantic==2.4.0
 fastapi
 uvicorn
 requests
