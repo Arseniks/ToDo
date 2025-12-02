@@ -2,7 +2,7 @@ pytest
 pytest-cov
 pytest-mock
 pydantic
-fastapi
+fastapi==0.123.4
 uvicorn
 requests
 dash
