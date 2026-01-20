@@ -5,5 +5,5 @@ pydantic
 fastapi
 uvicorn
 requests
-dash
+dash==3.4.0
 httpx
